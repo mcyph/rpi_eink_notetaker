@@ -1,0 +1,151 @@
+<html>
+<head>  
+<script type="text/javascript">
+
+// Kindle PaperWhite experimental browser as of start of 2021
+// doesn't seem to support many new javascript syntax features
+// so reverting to state of things circa 2011
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+Function.prototype.bind = function(that) {
+  var fn = this;
+  return function() {
+    return fn.apply(that, arguments);
+  }
+}
+
+function Canvas() {
+  this.onresize();
+  window.onresize = this.onresize.bind(this);
+  this.pollForever();
+}
+
+
+var COORD_X = 1920.0; // HACK!
+var COORD_Y = 1080.0; // HACK!
+
+
+Canvas.prototype = {
+  onresize: function() {
+    // Use the full width, getting 4x3 ratio (same as tablet)
+    // HACK: Kindle reports 20px out or so
+    var x = document.documentElement.clientWidth+20;
+    var y = Math.round(x/4.0 * 3.0);
+    
+    // Create the new canvas
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = x;
+    this.canvas.height = y;
+    
+    // Clear any previous canvas elements
+    $('canvas-cont').innerHTML = '';
+    $('canvas-cont').appendChild(this.canvas);
+    this.ctx = this.canvas.getContext('2d');
+    
+    // Start redrawing from scratch
+    this.strokeIdx = 0;
+    this.drawRuleLines();
+    this.redraw(this.data || []);
+  },
+  
+  drawRuleLines: function() {
+    var canvasHeight = parseInt(this.canvas.height);
+    var canvasWidth = parseInt(this.canvas.width);
+    
+    var increments = canvasHeight / 10.0;
+    for (var i=0; i<10; i++) {
+      var gradient = this.ctx.createLinearGradient(0, Math.round(increments*i), 0, Math.round(increments*(i+1)));
+      gradient.addColorStop(0.0, "#FFF");
+      gradient.addColorStop(1.0, "#EEE");
+      this.ctx.fillStyle = gradient;
+    
+      this.ctx.beginPath();
+      this.ctx.fillRect(0, Math.round(increments*i), canvasWidth, increments);
+      this.ctx.stroke();
+      
+      this.ctx.fillStyle = '#222';
+      this.ctx.font = '24px cursive';
+      this.ctx.fillText(
+        i+1 == 10 ? 0 : i+1, 
+        10, increments*(i+1) - 15
+      );
+    }
+    
+    // Add a little left hand margin indicator
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    this.ctx.beginPath();
+    this.ctx.fillRect(0, 0, 35, canvasHeight);
+    this.ctx.stroke();
+    
+    this.ctx.strokeStyle = 'black';
+  },
+  
+  pollForever: function() {
+    var that = this;
+    var req = new XMLHttpRequest();
+    //req.overrideMimeType('application/json');
+    req.open('GET', 'poll?stroke_idx='+this.strokeIdx, true);
+    req.onload = function() {
+      var data = JSON.parse(req.responseText);
+      that.redraw(data);
+      setTimeout(that.pollForever.bind(that), 500);
+    }
+    req.onerror = function() {
+      setTimeout(that.pollForever.bind(that), 2000);
+    }
+    req.send(null);
+  },
+  
+  redraw: function(data) {
+    var canvasWidth = parseInt(this.canvas.width);
+    var canvasHeight = parseInt(this.canvas.height);
+    var originalWidth = COORD_X;  // HACK!
+    var originalHeight = COORD_Y;  // HACK!
+    var scaleX = canvasWidth / originalWidth;
+    var scaleY = canvasHeight / originalHeight;
+    var iData = data.slice(this.strokeIdx);
+  
+    // draw each stroke
+    for (var i=0; i<iData.length; i++) {
+      var stroke = iData[i];
+      this.ctx.strokeWidth = 3;
+      this.ctx.strokeStyle = 'black';
+      this.ctx.beginPath();
+      this.ctx.moveTo(stroke[0][0]*scaleX, stroke[0][1]*scaleY);
+      for (var j=0; j<stroke.length; j++) {
+        var x = stroke[j][0];
+        var y = stroke[j][1];
+        this.ctx.lineTo(x*scaleX, y*scaleY);
+      }
+      this.ctx.stroke();
+    }
+    
+    // don't draw the same area again to 
+    // reduce being redrawn too often 
+    // (especially as this is e-ink!)
+    this.strokeIdx = data.length;
+    this.data = data;
+  },
+}
+
+</script>
+</head>
+<body style="padding: 0; margin: 0; height: 100vh; width: 100%">
+<h3 style="text-align: center; font-family: monospace; padding: 13px 10px; background: black; color: white; width: 100%">
+  My Document Title
+</h3>
+<div id="canvas-cont" style="width: 100%"></div>
+<script type="text/javascript">
+new Canvas();
+</script>
+<div style="text-align: center; position: absolute; bottom: -25px; width: 100%; padding: 0 10px; margin: 0">
+  <button style="float: left">New</button>
+  <button style="float: left">Open</button>
+  <button>&lt;</button>1/2<button>&gt;</button>
+  <button style="float: right">Redo</button>
+  <button style="float: right">Undo</button>
+</div>
+</body>

@@ -9,8 +9,6 @@ from FullscreenTabletTracker import FullscreenTabletTracker
 
 env = Environment(loader=FileSystemLoader(searchpath='./template'),
                   autoescape=True)
-new_open_template = env.get_template('new_open.html')
-edit_page_template = env.get_template('edit_page.html')
 Y_OFFSET = -20
 
 
@@ -23,6 +21,7 @@ class App(object):
     @cherrypy.expose
     def index(self):
         page_names = sorted(self.__documents, key=lambda x: x.lower())
+        new_open_template = env.get_template('new_open.html')
         return new_open_template.render(
             page_names=page_names
         )
@@ -50,6 +49,7 @@ class App(object):
         self.__current_document = document
         self.__current_page = page
 
+        edit_page_template = env.get_template('edit_page.html')
         return edit_page_template.render(
             page_name=page_name,
             page_num=page_num,

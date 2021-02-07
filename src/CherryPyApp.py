@@ -90,7 +90,7 @@ class App(object):
         page = document[int(page_num)]
 
         x = 0
-        while int(stroke_idx) == len(page.get_strokes()) and x < 30:
+        while int(stroke_idx) == len(page.get_strokes()) and x < 10:
             time.sleep(0.3)
             x += 1
         return page.get_strokes()

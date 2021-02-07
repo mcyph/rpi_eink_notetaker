@@ -16,9 +16,10 @@ class HandwrittenPage:
     def get_image(self):
         im = Image.new(mode='RGB', size=RESOLUTION, color=255)
         draw = ImageDraw.Draw(im)
-        draw.line(self.__strokes, width=3)
-        draw.ellipse(self.__strokes[0], fill=(255, 0, 0), width=3)
-        draw.ellipse(self.__strokes[-1], fill=(0, 0, 255), width=5)
+        for stroke in self.__strokes:
+            draw.line(stroke, width=3)
+            draw.ellipse(stroke[0], fill=(255, 0, 0), width=3)
+            draw.ellipse(stroke[-1], fill=(0, 0, 255), width=5)
         return im
 
     def undo(self):

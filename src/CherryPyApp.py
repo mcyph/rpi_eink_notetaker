@@ -3,33 +3,72 @@ import _thread
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 
+from HandwrittenDocuments import HandwrittenDocuments
 from FullscreenTabletTracker import FullscreenTabletTracker
 
 
-strokes = []
-env = Environment(loader=FileSystemLoader(searchpath='./'), 
+env = Environment(loader=FileSystemLoader(searchpath='./template'),
                   autoescape=True)
-index_template = env.get_template('index.html')
+new_open_template = env.get_template('new_open.html')
+edit_page_template = env.get_template('edit_page.html')
 Y_OFFSET = -20
 
 
 class App(object):
+    def __init__(self):
+        self.__documents = HandwrittenDocuments()
+        self.__current_document = None
+        self.__current_page = None
+
     @cherrypy.expose
     def index(self):
-        with open('template/index.html', 'r', encoding='utf-8') as f:
-            return f.read()
+        page_names = sorted(self.__documents, key=lambda x: x.lower())
+        return edit_page_template.render(
+            page_names=page_names
+        )
+
+    @cherrypy.expose
+    def edit_page(self, page_name, page_num=None, submit=False):
+        if submit:
+            document = self.__documents.create_new(page_name)
+        else:
+            document = self.__documents[page_name]
+
+        if page_num is None:
+            page_num = len(document)
+        else:
+            page_num = int(page_num)
+
+        page = document[page_num]
+        self.__current_document = document
+        self.__current_page = page
+
+    @cherrypy.expose
+    def page_pdf(self, page_name):
+        document = self.__documents[page_name]
+        cherrypy.response.headers['Content-Type'] = 'application/pdf'
+        return document.to_pdf().getvalue()
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def poll(self, stroke_idx):
+    def poll(self, page_name, page_num, stroke_idx):
+        document = self.__documents[page_name]
+        page = document[int(page_num)]
+        strokes = page.get_strokes()
+
         x = 0
         while int(stroke_idx) == len(strokes) and x < 30:
             time.sleep(0.3)
             x += 1
         return strokes
 
+    def append_stroke(self, stroke):
+        self.__current_page.append(stroke)
+
 
 if __name__ == '__main__':
+    APP = [None]
+
     def run():
         cherrypy.server.socket_host = '0.0.0.0'
 
@@ -39,13 +78,19 @@ if __name__ == '__main__':
         # When developing+viewing from multiple browsers
         # it makes sense to disable these lines
         cherrypy.server.thread_pool = 1
-        cherrypy.config.update({'global': {'engine.autoreload.on': False}})
+        cherrypy.config.update({
+            'global': {
+                'engine.autoreload.on': False
+            }
+        })
 
-        cherrypy.quickstart(App())
+        APP[0] = App()
+        cherrypy.quickstart(APP[0])
+
+    def on_draw_end(stroke):
+        stroke = [(x, max(0, y+Y_OFFSET)) for x, y in stroke]
+        APP[0].append_stroke(stroke)
+
     _thread.start_new_thread(run, ())
-    
-    def fn(points):
-        points = [(x, max(0, y+Y_OFFSET)) for x, y in points]
-        strokes.append(points)
-    w = FullscreenTabletTracker(fn)
+    w = FullscreenTabletTracker(on_draw_end)
     w.tk.mainloop()

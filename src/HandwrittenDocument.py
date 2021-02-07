@@ -21,9 +21,15 @@ class HandwrittenDocument:
     def __init__(self, name, create_new=False):
         self.__name = name
         self.__path = DOCUMENT_DIR / (name+'.sqlite')
-        if create_new and not self.__path.exists():
+
+        if not create_new and not self.__path.exists():
             raise FileNotFoundError(self.__path)
-        self.__shelve = ShelveReplacement()
+
+        self.__shelve = ShelveReplacement(self.__path)
+
+        if create_new:
+            # Add an initial page if new
+            self.append()
 
     def __del__(self):
         try:
@@ -76,7 +82,9 @@ class HandwrittenDocument:
             page = PdfFileReader(BytesIO(data_out.getvalue())).getPage(0)
             pdf.addPage(page)
 
-        pdf.write(open("output.pdf", "wb"))
+        out = BytesIO()
+        pdf.write(out)
+        return out
 
     def to_pdf_4_to_page(self):
         pass

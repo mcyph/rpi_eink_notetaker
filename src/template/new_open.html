@@ -1,0 +1,31 @@
+<html>
+<head>
+</head>
+<body style="padding: 0; margin: 0; height: 100vh; width: 100%">
+
+<h3 style="text-align: center; font-family: monospace; padding: 13px 10px;
+           background: black; color: white; width: 100%">
+  Create a new document
+</h3>
+
+<form action="edit_page">
+    <input name="page_name" placeholder="Document name" type="text" />
+    <button name="submit_button" value="submit">submit</button>
+</form>
+
+<h3 style="text-align: center; font-family: monospace; padding: 13px 10px;
+           background: black; color: white; width: 100%">
+  Open existing document
+</h3>
+
+<ul>
+    {% for page_name in page_names %}
+    <li>
+        { page_name }
+        [<a href="edit_page?page_name={ page_name }">edit</a>]
+        [<a href="page_pdf?page_name={ page_name }">pdf</a>]
+    </li>
+    {% endfor %}
+</ul>
+
+</body>

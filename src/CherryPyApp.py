@@ -3,7 +3,7 @@ import _thread
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 
-from FullscreenTabletTracker import Fullscreen_Window
+from FullscreenTabletTracker import FullscreenTabletTracker
 
 
 strokes = []
@@ -16,7 +16,7 @@ Y_OFFSET = -20
 class App(object):
     @cherrypy.expose
     def index(self):
-        with open('index.html', 'r', encoding='utf-8') as f:
+        with open('template/index.html', 'r', encoding='utf-8') as f:
             return f.read()
     
     @cherrypy.expose
@@ -27,7 +27,7 @@ class App(object):
             time.sleep(0.3)
             x += 1
         return strokes
-    
+
 
 if __name__ == '__main__':
     def run():
@@ -40,5 +40,5 @@ if __name__ == '__main__':
     def fn(points):
         points = [(x, max(0, y+Y_OFFSET)) for x, y in points]
         strokes.append(points)
-    w = Fullscreen_Window(fn)
+    w = FullscreenTabletTracker(fn)
     w.tk.mainloop()

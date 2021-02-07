@@ -1,15 +1,16 @@
-import sys
 import _thread
 from tkinter import *
 from pynput import mouse
 
+from constants import RESOLUTION
 
-class Fullscreen_Window:
+
+class FullscreenTabletTracker:
     def __init__(self, on_draw_end):
         self.on_draw_end = on_draw_end
         
         self.tk = Tk()
-        self.tk.geometry('1920x1080')
+        self.tk.geometry('%sx%s' % RESOLUTION)
         # This just maximizes it so we can see the window. It's nothing to do with fullscreen.
         self.tk.attributes('-zoomed', True)
         self.frame = Frame(self.tk)
@@ -18,9 +19,6 @@ class Fullscreen_Window:
         self.state = False
         self.tk.bind("<F11>", self.toggle_fullscreen)
         self.tk.bind("<Escape>", self.end_fullscreen)
-        #self.tk.bind("<B1-Motion>", self.motion)
-        #self.tk.bind("<Button-1>", self.release)
-        #self.tk.bind("<ButtonRelease-1>", self.release)
         self.toggle_fullscreen()
         
         self.points = []
@@ -59,5 +57,5 @@ class Fullscreen_Window:
 if __name__ == '__main__':
     def fn(points):
         print(points)
-    w = Fullscreen_Window(fn)
+    w = FullscreenTabletTracker(fn)
     w.tk.mainloop()

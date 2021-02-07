@@ -42,7 +42,7 @@ class App(object):
             document = self.__documents[page_name]
 
         if page_num is None:
-            page_num = len(document)
+            page_num = len(document)-1
         else:
             page_num = int(page_num)
 

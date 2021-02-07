@@ -5,6 +5,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
+from reportlab.lib.utils import ImageReader
 from PyPDF2 import PdfFileWriter, PdfFileReader
 
 from HandwrittenPage import HandwrittenPage
@@ -86,7 +87,7 @@ class HandwrittenDocument:
         for page_num in range(len(self)):
             data_out = BytesIO()
             _canvas = canvas.Canvas(data_out, pagesize=A4)
-            _canvas.drawImage(self[page_num].get_image(),
+            _canvas.drawImage(ImageReader(self[page_num].get_image()),
                               0, 0, A4_SIZE[0], A4_SIZE[1])
             _canvas.save()
             page = PdfFileReader(BytesIO(data_out.getvalue())).getPage(0)

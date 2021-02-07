@@ -19,7 +19,9 @@ class HandwrittenDocuments:
 
     def __getattr__(self, item):
         item = ''.join(i for i in item if i not in '<>:"/\\|?*').strip()
-        return HandwrittenDocument(item)
+        if item not in self.__open_docs:
+            self.__open_docs[item] = HandwrittenDocument(item)
+        return self.__open_docs[item]
 
     def create_new(self, item):
         return HandwrittenDocument(item, create_new=True)

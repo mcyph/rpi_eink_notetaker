@@ -88,25 +88,25 @@ class App(object):
     def poll(self, page_name, page_num, stroke_idx):
         document = self.__documents[page_name]
         page = document[int(page_num)]
-        strokes = page.get_strokes()
 
         x = 0
-        while int(stroke_idx) == len(strokes) and x < 30:
+        while int(stroke_idx) == len(page.get_strokes()) and x < 30:
             time.sleep(0.3)
             x += 1
-        return strokes
+        return page.get_strokes()
 
     def append_stroke(self, documents, stroke):
         print("SENDING:", self.__current_page, stroke)
         if self.__current_page:
             # Can't use the instance of "HandwrittenDocument"
             # as the SQLite connection isn't threadsafe!
-            #current_document = documents[self.__current_document.name]
-            #current_page = current_document[self.__current_page.page_num]
-            current_document = self.__current_document
-            current_page = self.__current_page
+            current_document = documents[self.__current_document.name]
+            current_page = current_document[self.__current_page.page_num]
+            #current_document = self.__current_document
+            #current_page = self.__current_page
 
             current_page.append(stroke)
+            self.__current_page.append(stroke)  # sync in other thread, too
             current_document[current_page.page_num] = current_page
             current_document.commit()
 

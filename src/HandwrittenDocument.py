@@ -52,7 +52,8 @@ class HandwrittenDocument:
     def __setitem__(self, item, hp):
         assert isinstance(hp, HandwrittenPage)
         key = '%03d' % item
-        self.__open_pages[key] = self.__shelve[key] = hp.get_strokes()
+        self.__shelve[key] = hp.get_strokes()
+        self.__open_pages[key] = hp
         self.commit()
 
     def __delitem__(self, item):

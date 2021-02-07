@@ -97,6 +97,7 @@ class App(object):
         return strokes
 
     def append_stroke(self, documents, stroke):
+        print("SENDING:", self.__current_page, stroke)
         if self.__current_page:
             # Can't use the instance of "HandwrittenDocument"
             # as the SQLite connection isn't threadsafe!

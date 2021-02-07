@@ -3,9 +3,12 @@ import sqlite3
 from os.path import exists
 
 
+ENABLE_WAL_QUERY = 'PRAGMA journal_mode=WAL;'
 CREATE_QUERY = 'CREATE TABLE my_data(key TEXT NOT NULL PRIMARY KEY, value TEXT NOT NULL);'
 COUNT_QUERY = 'SELECT COUNT(key) FROM my_data'
 ITER_QUERY = 'SELECT key FROM my_data ORDER BY key ASC'
+# Note the use of the "?" character to
+# prevent SQL injection vulnerabilities!
 SETITEM_QUERY = 'REPLACE INTO my_data (key, value) VALUES (?, ?);'
 GETITEM_QUERY = 'SELECT value FROM my_data WHERE key = ?;'
 DELITEM_QUERY = 'DELETE FROM my_data WHERE key = ?;'
@@ -19,7 +22,7 @@ class ShelveReplacement:
 
         # Enable write-ahead logging
         # Please see https://www.sqlite.org/wal.html for more info before using this!
-        self.con.execute('PRAGMA journal_mode=WAL;')
+        self.con.execute(ENABLE_WAL_QUERY)
 
         if not already_exists:
             self.con.execute(CREATE_QUERY)
@@ -45,8 +48,6 @@ class ShelveReplacement:
             yield key
 
     def __setitem__(self, key, value):
-        # Note the use of the "?" character to
-        # prevent SQL injection vulnerabilities!
         self.con.execute(SETITEM_QUERY, (key, json.dumps(value)))
 
     def __getitem__(self, key):

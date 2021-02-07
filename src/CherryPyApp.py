@@ -34,8 +34,8 @@ class App(object):
         raise cherrypy.HTTPRedirect('edit_page?page_name='+page_name)
 
     @cherrypy.expose
-    def edit_page(self, page_name, page_num=None, submit=False):
-        if submit:
+    def edit_page(self, page_name, page_num=None, submit_button=False):
+        if submit_button:
             document = self.__documents.create_new(page_name)
         else:
             document = self.__documents[page_name]

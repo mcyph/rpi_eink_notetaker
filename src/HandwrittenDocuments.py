@@ -34,4 +34,5 @@ class HandwrittenDocuments:
 
     def create_new(self, item):
         item = _sanitize(item)
-        return HandwrittenDocument(item, create_new=True)
+        hd = self.__open_docs[item] = HandwrittenDocument(item, create_new=True)
+        return hd

@@ -32,8 +32,15 @@ class App(object):
 if __name__ == '__main__':
     def run():
         cherrypy.server.socket_host = '0.0.0.0'
+
+        # I'm restricting to a single thread
+        # without autoreload to conserve resources.
+        #
+        # When developing+viewing from multiple browsers
+        # it makes sense to disable these lines
         cherrypy.server.thread_pool = 1
         cherrypy.config.update({'global': {'engine.autoreload.on': False}})
+
         cherrypy.quickstart(App())
     _thread.start_new_thread(run, ())
     

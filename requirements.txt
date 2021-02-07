@@ -1,3 +1,5 @@
 pynput
 cherrypy
 python-dotenv
+reportlab
+pypdf2

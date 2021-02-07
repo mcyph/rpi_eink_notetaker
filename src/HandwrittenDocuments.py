@@ -18,5 +18,8 @@ class HandwrittenDocuments:
             yield i[:-7]
 
     def __getattr__(self, item):
+        item = ''.join(i for i in item if i not in '<>:"/\\|?*').strip()
         return HandwrittenDocument(item)
 
+    def create_new(self, item):
+        return HandwrittenDocument(item, create_new=True)

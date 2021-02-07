@@ -23,9 +23,16 @@ class App(object):
     @cherrypy.expose
     def index(self):
         page_names = sorted(self.__documents, key=lambda x: x.lower())
-        return edit_page_template.render(
+        return new_open_template.render(
             page_names=page_names
         )
+
+    @cherrypy.expose
+    def add_page(self, page_name):
+        # Add a new page to the document, then browse to it
+        document = self.__documents[page_name]
+        document.append()
+        raise cherrypy.HTTPRedirect('edit_page?page_name='+page_name)
 
     @cherrypy.expose
     def edit_page(self, page_name, page_num=None, submit=False):
@@ -42,6 +49,12 @@ class App(object):
         page = document[page_num]
         self.__current_document = document
         self.__current_page = page
+
+        return edit_page_template.render(
+            page_name=page_name,
+            page_num=page_num,
+            total_pages=len(document)
+        )
 
     @cherrypy.expose
     def page_pdf(self, page_name):
@@ -63,7 +76,10 @@ class App(object):
         return strokes
 
     def append_stroke(self, stroke):
-        self.__current_page.append(stroke)
+        if self.__current_page:
+            self.__current_page.append(stroke)
+            self.__current_document[self.__current_page.page_num] = self.__current_page
+            self.__current_document.commit()
 
 
 if __name__ == '__main__':

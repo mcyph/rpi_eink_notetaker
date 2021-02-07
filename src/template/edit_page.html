@@ -135,16 +135,16 @@ Canvas.prototype = {
 </head>
 <body style="padding: 0; margin: 0; height: 100vh; width: 100%">
 <h3 style="text-align: center; font-family: monospace; padding: 13px 10px; background: black; color: white; width: 100%">
-  My Document Title
+  { page_name }
 </h3>
 <div id="canvas-cont" style="width: 100%"></div>
 <script type="text/javascript">
-new Canvas();
+  new Canvas();
 </script>
 <div style="text-align: center; position: absolute; bottom: -25px; width: 100%; padding: 0 10px; margin: 0">
-  <button style="float: left">New</button>
-  <button style="float: left">Open</button>
-  <button>&lt;</button>1/2<button>&gt;</button>
+  <button style="float: left"><a href="/add_page?page_name={ page_name }">New</a></button>
+  <button style="float: left"><a href="/">Open</a></button>
+  <button><a href="/add_page?page_name={ page_name }&page_num={ page_num-1 }">&lt;</a>></button>{ page_num+1 }/{ total_pages }<button><a href="/add_page?page_name={ page_name }&page_num={ page_num+1 }">&gt;</a>></button>
   <button style="float: right">Redo</button>
   <button style="float: right">Undo</button>
 </div>

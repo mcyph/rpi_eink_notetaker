@@ -5,7 +5,8 @@ from constants import RESOLUTION
 
 
 class HandwrittenPage:
-    def __init__(self, strokes=None):
+    def __init__(self, page_num, strokes=None):
+        self.page_num = page_num
         self.__strokes = strokes or []
 
     def get_strokes(self):

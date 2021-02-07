@@ -42,7 +42,7 @@ class HandwrittenDocument:
         return len(self.__shelve)
 
     def __getitem__(self, item):
-        return HandwrittenPage(self.__shelve['%03d' % item])
+        return HandwrittenPage(item, self.__shelve['%03d' % item])
 
     def __setitem__(self, item):
         assert isinstance(item, HandwrittenPage)
@@ -52,7 +52,7 @@ class HandwrittenDocument:
         raise NotImplementedError()  # TODO!
 
     def append(self):
-        hp = self[len(self)] = HandwrittenPage(strokes=[])
+        hp = self[len(self)] = HandwrittenPage(len(self), strokes=[])
         return hp
 
     def insert(self, index):

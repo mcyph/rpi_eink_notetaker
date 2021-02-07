@@ -45,9 +45,9 @@ class HandwrittenDocument:
     def __getitem__(self, item):
         return HandwrittenPage(item, self.__shelve['%03d' % item])
 
-    def __setitem__(self, item):
-        assert isinstance(item, HandwrittenPage)
-        self.__shelve['%03d' % item] = item.get_strokes()
+    def __setitem__(self, item, hp):
+        assert isinstance(hp, HandwrittenPage)
+        self.__shelve['%03d' % item] = hp.get_strokes()
 
     def __delitem__(self, item):
         raise NotImplementedError()  # TODO!

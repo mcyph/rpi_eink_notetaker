@@ -101,8 +101,10 @@ class App(object):
         if self.__current_page:
             # Can't use the instance of "HandwrittenDocument"
             # as the SQLite connection isn't threadsafe!
-            current_document = documents[self.__current_document.name]
-            current_page = current_document[self.__current_page.page_num]
+            #current_document = documents[self.__current_document.name]
+            #current_page = current_document[self.__current_page.page_num]
+            current_document = self.__current_document
+            current_page = self.__current_page
 
             current_page.append(stroke)
             current_document[current_page.page_num] = current_page

@@ -17,6 +17,7 @@ class HandwrittenPage:
         im = Image.new(mode='RGB', size=RESOLUTION, color=255)
         draw = ImageDraw.Draw(im)
         for stroke in self.__strokes:
+            stroke = tuple([tuple(i) for i in stroke])
             draw.line(stroke, width=3)
             draw.ellipse(stroke[0], fill=(255, 0, 0), width=3)
             draw.ellipse(stroke[-1], fill=(0, 0, 255), width=5)

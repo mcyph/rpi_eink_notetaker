@@ -1,4 +1,5 @@
 from os import environ
+from os.path import expanduser
 from io import BytesIO
 from pathlib import Path
 from dotenv import load_dotenv
@@ -11,7 +12,7 @@ from ShelveReplacement import ShelveReplacement
 
 
 load_dotenv(override=True)
-DOCUMENT_DIR = Path(environ['DOCUMENT_DIR'])
+DOCUMENT_DIR = Path(expanduser(environ['DOCUMENT_DIR']))
 
 PDF_INCH_UNIT = 71.0
 A4_SIZE = (8.27*PDF_INCH_UNIT, 11.69*PDF_INCH_UNIT)

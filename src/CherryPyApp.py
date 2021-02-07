@@ -36,7 +36,7 @@ class App(object):
 
     @cherrypy.expose
     def edit_page(self, page_name, page_num=None, submit_button=False):
-        if submit_button:
+        if submit_button and page_name not in self.__documents:
             document = self.__documents.create_new(page_name)
         else:
             document = self.__documents[page_name]

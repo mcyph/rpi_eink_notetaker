@@ -10,6 +10,11 @@ load_dotenv(override=True)
 DOCUMENT_DIR = Path(expanduser(environ['DOCUMENT_DIR']))
 
 
+def _sanitize(item):
+    item = ''.join(i for i in item if i not in '<>:"/\\|?*').strip()
+    return item
+
+
 class HandwrittenDocuments:
     def __init__(self):
         self.__open_docs = {}
@@ -19,11 +24,14 @@ class HandwrittenDocuments:
             yield i[:-7]
 
     def __getattr__(self, item):
-        item = ''.join(i for i in item if i not in '<>:"/\\|?*').strip()
+        item = _sanitize(item)
         if item not in self.__open_docs:
             self.__open_docs[item] = HandwrittenDocument(item)
         return self.__open_docs[item]
 
+    def __contains__(self, item):
+        return item in list(self)
+
     def create_new(self, item):
-        item = ''.join(i for i in item if i not in '<>:"/\\|?*').strip()
+        item = _sanitize(item)
         return HandwrittenDocument(item, create_new=True)

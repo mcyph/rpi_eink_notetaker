@@ -23,7 +23,7 @@ class HandwrittenDocuments:
         for i in DOCUMENT_DIR.glob('*.sqlite'):
             yield i.name[:-7]
 
-    def __getattr__(self, item):
+    def __getitem__(self, item):
         item = _sanitize(item)
         if item not in self.__open_docs:
             self.__open_docs[item] = HandwrittenDocument(item)

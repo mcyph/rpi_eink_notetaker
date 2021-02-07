@@ -62,6 +62,26 @@ class App(object):
         document = self.__documents[page_name]
         cherrypy.response.headers['Content-Type'] = 'application/pdf'
         return document.to_pdf().getvalue()
+
+    @cherrypy.expose
+    def undo(self, page_name, page_num):
+        page_num = int(page_num)
+        document = self.__documents[page_name]
+        page = document[page_num]
+        page.undo()
+        document[self.__current_page.page_num] = page
+        document.commit()
+        return "ok"
+
+    @cherrypy.expose
+    def redo(self, page_name, page_num):
+        page_num = int(page_num)
+        document = self.__documents[page_name]
+        page = document[page_num]
+        page.redo()
+        document[self.__current_page.page_num] = page
+        document.commit()
+        return "ok"
     
     @cherrypy.expose
     @cherrypy.tools.json_out()

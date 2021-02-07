@@ -22,6 +22,7 @@ class HandwrittenDocument:
     def __init__(self, name, create_new=False):
         self.__name = name
         self.__path = DOCUMENT_DIR / (name+'.sqlite')
+        self.__open_pages = {}
 
         if not create_new and not self.__path.exists():
             raise FileNotFoundError(self.__path)
@@ -43,11 +44,15 @@ class HandwrittenDocument:
         return len(self.__shelve)
 
     def __getitem__(self, item):
-        return HandwrittenPage(item, self.__shelve['%03d' % item])
+        key = '%03d' % item
+        if key not in self.__open_pages:
+            self.__open_pages[key] = HandwrittenPage(item, self.__shelve[key])
+        return self.__open_pages[key]
 
     def __setitem__(self, item, hp):
         assert isinstance(hp, HandwrittenPage)
         self.__shelve['%03d' % item] = hp.get_strokes()
+        self.commit()
 
     def __delitem__(self, item):
         raise NotImplementedError()  # TODO!

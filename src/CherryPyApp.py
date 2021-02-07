@@ -31,6 +31,7 @@ class App(object):
         # Add a new page to the document, then browse to it
         document = self.__documents[page_name]
         document.append()
+        document.commit()
         raise cherrypy.HTTPRedirect('edit_page?page_name='+page_name)
 
     @cherrypy.expose

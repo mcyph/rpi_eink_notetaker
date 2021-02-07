@@ -14,11 +14,11 @@ class HandwrittenPage:
         return copy.deepcopy(self.__strokes[:self.undo_index])
 
     def get_image(self):
-        im = Image.new(mode='RGB', size=RESOLUTION, color=255)
+        im = Image.new(mode='RGB', size=RESOLUTION, color=(255, 255, 255))
         draw = ImageDraw.Draw(im)
         for stroke in self.__strokes:
             stroke = tuple([tuple(i) for i in stroke])
-            draw.line(stroke, width=3)
+            draw.line(stroke, width=3, fill=(0, 0, 0))
             draw.ellipse((stroke[0][0]-2, stroke[0][1]-2,
                           stroke[0][0]+2, stroke[0][1]+2),
                          fill=(255, 0, 0))

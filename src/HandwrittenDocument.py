@@ -59,6 +59,7 @@ class HandwrittenDocument:
 
     def append(self):
         hp = self[len(self)] = HandwrittenPage(len(self), strokes=[])
+        self.commit()
         return hp
 
     def insert(self, index):
@@ -71,6 +72,7 @@ class HandwrittenDocument:
         self.__shelve.close()
 
     def rename(self, new_name):
+        # CHECK ME!!!!
         new_path = DOCUMENT_DIR / (new_name+'.sqlite')
         self.__path.rename(new_path)
         self.__path = new_path

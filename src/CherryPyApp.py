@@ -32,7 +32,7 @@ class App(object):
         document = self.__documents[page_name]
         document.append()
         document.commit()
-        raise cherrypy.HTTPRedirect('edit_page?page_name='+page_name)
+        raise cherrypy.HTTPRedirect('edit_page?page_name='+page_name+'&page_num='+str(len(document)-1))
 
     @cherrypy.expose
     def edit_page(self, page_name, page_num=None, submit_button=False):

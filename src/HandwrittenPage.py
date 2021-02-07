@@ -28,16 +28,16 @@ class HandwrittenPage:
 
     def redo(self):
         self.undo_index = self.undo_index+1
-        if self.undo_index >= len(self.__strokes):
+        if self.undo_index > len(self.__strokes):
             self.undo_index -= 1
 
     def append(self, stroke):
         # TODO: make
         self.__strokes = self.__strokes[:self.undo_index]
         self.__strokes.append(stroke)
-        self.undo_index = len(self.__strokes) - 1
+        self.undo_index = len(self.__strokes)
 
     def insert(self, idx, stroke):
         self.__strokes = self.__strokes[:self.undo_index]
         self.__strokes.insert(idx, stroke)
-        self.undo_index = len(self.__strokes)-1
+        self.undo_index = len(self.__strokes)

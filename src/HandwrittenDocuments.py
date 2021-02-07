@@ -30,9 +30,11 @@ class HandwrittenDocuments:
         return self.__open_docs[item]
 
     def __contains__(self, item):
+        item = _sanitize(item)
         return item in list(self)
 
     def create_new(self, item):
         item = _sanitize(item)
+        assert item not in self
         hd = self.__open_docs[item] = HandwrittenDocument(item, create_new=True)
         return hd

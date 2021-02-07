@@ -21,7 +21,7 @@ class HandwrittenDocuments:
 
     def __iter__(self):
         for i in DOCUMENT_DIR.glob('*.sqlite'):
-            yield i[:-7]
+            yield i.name[:-7]
 
     def __getattr__(self, item):
         item = _sanitize(item)

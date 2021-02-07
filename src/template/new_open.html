@@ -21,9 +21,9 @@
 <ul>
     {% for page_name in page_names %}
     <li>
-        { page_name }
-        [<a href="edit_page?page_name={ page_name }">edit</a>]
-        [<a href="page_pdf?page_name={ page_name }">pdf</a>]
+        {{ page_name }}
+        [<a href="edit_page?page_name={{ page_name }}">edit</a>]
+        [<a href="page_pdf?page_name={{ page_name }}">pdf</a>]
     </li>
     {% endfor %}
 </ul>

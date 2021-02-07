@@ -96,15 +96,21 @@ class App(object):
             x += 1
         return strokes
 
-    def append_stroke(self, stroke):
+    def append_stroke(self, documents, stroke):
         if self.__current_page:
-            self.__current_page.append(stroke)
-            self.__current_document[self.__current_page.page_num] = self.__current_page
-            self.__current_document.commit()
+            # Can't use the instance of "HandwrittenDocument"
+            # as the SQLite connection isn't threadsafe!
+            current_document = documents[self.__current_document.name]
+            current_page = current_document[self.__current_page.page_num]
+
+            current_page.append(stroke)
+            current_document[current_page.page_num] = current_page
+            current_document.commit()
 
 
 if __name__ == '__main__':
     APP = [None]
+    DOCUMENTS = [None]
 
     def run():
         cherrypy.server.socket_host = '0.0.0.0'
@@ -122,11 +128,12 @@ if __name__ == '__main__':
         })
 
         APP[0] = App()
+        DOCUMENTS[0] = HandwrittenDocuments()
         cherrypy.quickstart(APP[0])
 
     def on_draw_end(stroke):
         stroke = [(x, max(0, y+Y_OFFSET)) for x, y in stroke]
-        APP[0].append_stroke(stroke)
+        APP[0].append_stroke(DOCUMENTS[0], stroke)
 
     _thread.start_new_thread(run, ())
     w = FullscreenTabletTracker(on_draw_end)

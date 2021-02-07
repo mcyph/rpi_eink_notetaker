@@ -20,7 +20,7 @@ A4_SIZE = (8.27*PDF_INCH_UNIT, 11.69*PDF_INCH_UNIT)
 
 class HandwrittenDocument:
     def __init__(self, name, create_new=False):
-        self.__name = name
+        self.name = name
         self.__path = DOCUMENT_DIR / (name+'.sqlite')
         self.__open_pages = {}
 
@@ -76,7 +76,7 @@ class HandwrittenDocument:
         new_path = DOCUMENT_DIR / (new_name+'.sqlite')
         self.__path.rename(new_path)
         self.__path = new_path
-        self.__name = new_name
+        self.name = new_name
 
     def to_pdf(self):
         pdf = PdfFileWriter()

@@ -21,10 +21,10 @@ class HandwrittenPage:
             draw.line(stroke, width=3, fill=(0, 0, 0))
             draw.ellipse((stroke[0][0]-2, stroke[0][1]-2,
                           stroke[0][0]+2, stroke[0][1]+2),
-                         fill=(255, 0, 0))
+                         fill=(0, 0, 0))
             draw.ellipse((stroke[-1][0]-3, stroke[-1][1]-3,
                           stroke[-1][0]+3, stroke[-1][1]+3),
-                         fill=(0, 0, 255))
+                         fill=(0, 0, 0))
         return im
 
     def undo(self):

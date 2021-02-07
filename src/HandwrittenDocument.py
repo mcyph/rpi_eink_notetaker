@@ -98,5 +98,37 @@ class HandwrittenDocument:
         return out
 
     def to_pdf_4_to_page(self):
-        pass
+        pdf = PdfFileWriter()
+        _canvas = None
+        data_out = None
 
+        for page_num in range(len(self)):
+            image = ImageReader(self[page_num].get_image())
+
+            if page_num % 4 == 0:
+                data_out = BytesIO()
+                _canvas = canvas.Canvas(data_out, pagesize=A4)
+
+                _canvas.drawImage(image, 0, 0, A4_SIZE[0]//2, A4_SIZE[1]//2)
+            elif page_num % 4 == 1:
+                _canvas.drawImage(image, A4_SIZE[0]//2, 0, A4_SIZE[0], A4_SIZE[1]//2)
+            elif page_num % 4 == 2:
+                _canvas.drawImage(image, 0, A4_SIZE[1]//2, A4_SIZE[0]//2, A4_SIZE[1])
+            elif page_num % 4 == 3:
+                _canvas.drawImage(image, A4_SIZE[0]//2, A4_SIZE[1]//2, A4_SIZE[0], A4_SIZE[1])
+
+                _canvas.save()
+                page = PdfFileReader(BytesIO(data_out.getvalue())).getPage(0)
+                pdf.addPage(page)
+                _canvas = None
+            else:
+                raise Exception()
+
+        if _canvas:
+            _canvas.save()
+            page = PdfFileReader(BytesIO(data_out.getvalue())).getPage(0)
+            pdf.addPage(page)
+
+        out = BytesIO()
+        pdf.write(out)
+        return out

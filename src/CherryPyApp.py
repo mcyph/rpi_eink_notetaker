@@ -64,6 +64,12 @@ class App(object):
         return document.to_pdf().getvalue()
 
     @cherrypy.expose
+    def four_page_pdf(self, page_name):
+        document = self.__documents[page_name]
+        cherrypy.response.headers['Content-Type'] = 'application/pdf'
+        return document.to_pdf_4_to_page().getvalue()
+
+    @cherrypy.expose
     def undo(self, page_name, page_num):
         page_num = int(page_num)
         document = self.__documents[page_name]

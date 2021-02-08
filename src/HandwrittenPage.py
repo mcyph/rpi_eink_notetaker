@@ -19,8 +19,8 @@ class HandwrittenPage:
         for stroke in self.__strokes:
             stroke = tuple([tuple(i) for i in stroke])
             draw.line(stroke, width=3, fill=(0, 0, 0))
-            draw.ellipse((stroke[0][0]-2, stroke[0][1]-2, stroke[0][0]+2, stroke[0][1]+2), fill=(0, 0, 50))
-            draw.ellipse((stroke[-1][0]-3, stroke[-1][1]-3, stroke[-1][0]+3, stroke[-1][1]+3), fill=(50, 0, 0))
+            draw.ellipse((stroke[0][0]-2, stroke[0][1]-2, stroke[0][0]+2, stroke[0][1]+2), fill=(0, 0, 120))
+            draw.ellipse((stroke[-1][0]-3, stroke[-1][1]-3, stroke[-1][0]+3, stroke[-1][1]+3), fill=(120, 0, 0))
         return im
 
     def undo(self):

@@ -108,5 +108,6 @@ class FramebufferStrokeDisplay:
         self.__cursor_pos = cursor_pos
 
     def update(self):
-        pygame.display.update(self.__update_regions)
+        if self.__update_regions:
+            pygame.display.update(self.__update_regions)
         self.__update_regions = []

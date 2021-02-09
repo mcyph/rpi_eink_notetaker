@@ -51,7 +51,7 @@ class FramebufferStrokeDisplay:
         print(f"Framebuffer size: {size[0]}x{size[1]}")
         self.screen = pygame.display.set_mode(size,
                                               pygame.FULLSCREEN
-                                              | pygame.DOUBLEBUF
+                                              #| pygame.DOUBLEBUF
                                               #| pygame.OPENGL
                                               | pygame.HWSURFACE
                                               )
@@ -112,6 +112,6 @@ class FramebufferStrokeDisplay:
 
     def update(self):
         if self.__update_regions:
-            #pygame.display.update(self.__update_regions)
-            pygame.display.flip()
+            pygame.display.update(self.__update_regions)
+            #pygame.display.flip()
         self.__update_regions = []

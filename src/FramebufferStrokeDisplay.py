@@ -21,7 +21,7 @@ class FramebufferStrokeDisplay:
         # Check which frame buffer drivers are available
         # Start with fbcon since directfb hangs with composite output
         drivers = [#'RPI',
-                   'dispmanx',
+                   #'dispmanx',
                    'opengl',
                    'fbcon',
                    'directfb',
@@ -60,6 +60,8 @@ class FramebufferStrokeDisplay:
         self.stroke_surface = pygame.Surface(size)
         pygame.draw.ellipse(self.cursor_surface, (255, 0, 0), [0, 0, 4, 4])
         self.__current_id = 0
+        self.__update_regions = []
+        self.__cursor_pos = [0, 0]
 
     def __del__(self):
         """
@@ -82,10 +84,16 @@ class FramebufferStrokeDisplay:
             pygame.draw.lines(self.stroke_surface, (255, 255, 255), False, stroke)
         self.__current_id = len(strokes)
 
-        #self.screen.blit(self.stroke_surface, [0, 0])
         self.screen.blit(self.cursor_surface,
                          [self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
                           round(cursor_pos[0]*(self.size[1]/1920.0))-2])
 
+        self.__update_regions.append((self.__cursor_pos[0], self.__cursor_pos[1],
+                                      self.__cursor_pos[0] + 4, self.__cursor_pos[1] + 4))
+        self.__update_regions.append((cursor_pos[0], cursor_pos[1],
+                                      cursor_pos[0]+4, cursor_pos[1]+4))
+        self.__cursor_pos = cursor_pos
+
     def update(self):
-        pygame.display.flip()
+        pygame.display.update(self.__update_regions)
+        self.__update_regions = []

@@ -115,6 +115,8 @@ class HandwrittenDocument:
             if page_num % 4 == 0:
                 data_out = BytesIO()
                 _canvas = canvas.Canvas(data_out, pagesize=A4)
+                _canvas.setFont('Helvetica', 20)
+                _canvas.drawCentredString(IMG_WIDTH//2, IMG_HEIGHT, self.name)
 
                 _canvas.drawImage(image, 0,             A4_SIZE[1]//2, IMG_WIDTH, IMG_HEIGHT)
             elif page_num % 4 == 1:

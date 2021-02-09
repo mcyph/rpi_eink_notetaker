@@ -20,8 +20,9 @@ class FramebufferStrokeDisplay:
 
         # Check which frame buffer drivers are available
         # Start with fbcon since directfb hangs with composite output
-        drivers = ['dispmanx',
-                   'gl',
+        drivers = ['RPI',
+                   'dispmanx',
+                   'opengl',
                    'fbcon',
                    'directfb',
                    'svgalib',

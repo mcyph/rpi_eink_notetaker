@@ -92,9 +92,11 @@ class FramebufferStrokeDisplay:
                                                      max([y for x, y in stroke])))
         self.__current_id = len(strokes)
 
-        self.screen.blit(self.cursor_surface,
-                         [self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
-                          round(cursor_pos[0]*(self.size[1]/1920.0))-2])
+        cursor_pos = [
+            self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
+            round(cursor_pos[0]*(self.size[1]/1920.0))-2
+        ]
+        self.screen.blit(self.cursor_surface, cursor_pos)
 
         self.__update_regions.append(pygame.Rect(self.__cursor_pos[0],
                                                  self.__cursor_pos[1],

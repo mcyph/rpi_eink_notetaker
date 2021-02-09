@@ -6,8 +6,9 @@ from constants import RESOLUTION
 
 
 class FullscreenTabletTracker:
-    def __init__(self, on_draw_end):
+    def __init__(self, on_draw_end, on_motion):
         self.on_draw_end = on_draw_end
+        self.on_motion = on_motion
         
         self.tk = Tk()
         self.tk.geometry('%sx%s' % RESOLUTION)
@@ -35,6 +36,7 @@ class FullscreenTabletTracker:
     def motion(self, x, y):
         if self.mouse_down:
             self.points.append((x, y))
+        self.on_motion(x, y)
         
     def on_click(self, *args):
         if self.points:

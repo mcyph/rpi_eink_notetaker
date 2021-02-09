@@ -116,6 +116,13 @@ class App(object):
 
             return current_page
 
+    def get_strokes(self):
+        current_page = self.__current_page
+        if current_page:
+            return current_page.get_strokes()
+        else:
+            return None
+
 
 if __name__ == '__main__':
     APP = [None]
@@ -147,10 +154,11 @@ if __name__ == '__main__':
         stroke = [(x, max(0, y+Y_OFFSET)) for x, y in stroke]
         current_page = APP[0].append_stroke(DOCUMENTS[0], stroke)
 
-        if current_page:
-            fb_stroke_display.clear()
-            fb_stroke_display.draw(current_page.get_strokes(), [0, 0])
-            fb_stroke_display.update()
+    def on_motion(x, y):
+        strokes = APP[0].get_strokes() or []
+        fb_stroke_display.clear()
+        fb_stroke_display.draw(strokes, [x, y])
+        fb_stroke_display.update()
 
-    w = FullscreenTabletTracker(on_draw_end)
+    w = FullscreenTabletTracker(on_draw_end, on_motion)
     w.tk.mainloop()

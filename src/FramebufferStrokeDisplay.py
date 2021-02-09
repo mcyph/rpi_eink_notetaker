@@ -65,9 +65,13 @@ class FramebufferStrokeDisplay:
     def draw(self, strokes, cursor_pos):
         for stroke in strokes:
             stroke = [
-                (round(x*(self.size[0]/1920.0)), round(y*(self.size[1]/1080.0)))
+                (round(y*(self.size[1]/1920.0)), round(x*(self.size[0]/1080.0)))
                 for x, y in stroke
             ]
+            #stroke = [
+            #    (round(x*(self.size[0]/1920.0)), round(y*(self.size[1]/1080.0)))
+            #    for x, y in stroke
+            #]
             pygame.draw.lines(self.screen, (255, 255, 255), False,
                               stroke)
 

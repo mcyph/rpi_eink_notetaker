@@ -3,3 +3,4 @@ cherrypy
 python-dotenv
 reportlab
 pypdf2
+pygame

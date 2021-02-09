@@ -5,6 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from HandwrittenDocuments import HandwrittenDocuments
 from FullscreenTabletTracker import FullscreenTabletTracker
+from FramebufferStrokeDisplay import FramebufferStrokeDisplay
 
 
 env = Environment(loader=FileSystemLoader(searchpath='./template'),
@@ -109,6 +110,8 @@ class App(object):
             current_document[current_page.page_num] = current_page
             current_document.commit()
 
+            return current_page
+
 
 if __name__ == '__main__':
     APP = [None]
@@ -133,9 +136,16 @@ if __name__ == '__main__':
         DOCUMENTS[0] = HandwrittenDocuments()
         cherrypy.quickstart(APP[0])
 
+    fb_stroke_display = FramebufferStrokeDisplay()
+
     def on_draw_end(stroke):
         stroke = [(x, max(0, y+Y_OFFSET)) for x, y in stroke]
-        APP[0].append_stroke(DOCUMENTS[0], stroke)
+        current_page = APP[0].append_stroke(DOCUMENTS[0], stroke)
+
+        if current_page:
+            fb_stroke_display.clear()
+            fb_stroke_display.draw(current_page.get_strokes(), [0, 0])
+            fb_stroke_display.update()
 
     _thread.start_new_thread(run, ())
     w = FullscreenTabletTracker(on_draw_end)

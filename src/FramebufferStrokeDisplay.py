@@ -81,6 +81,7 @@ class FramebufferStrokeDisplay:
             self.__current_id = 0
             self.clear()
 
+        changed = False
         for stroke in strokes[self.__current_id:]:
             stroke = [
                 (self.size[0]-round(y*(self.size[0]/1080.0)),
@@ -93,8 +94,11 @@ class FramebufferStrokeDisplay:
             self.__update_regions.append(pygame.Rect(xmin, ymin,
                                                      max([x for x, y in stroke])-xmin,
                                                      max([y for x, y in stroke])-ymin))
+            changed = True
+
+        if changed:
+            self.screen.blit(self.stroke_surface, (0, 0))
         self.__current_id = len(strokes)
-        self.screen.blit(self.stroke_surface, (0, 0))
 
         cursor_pos = [
             self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,

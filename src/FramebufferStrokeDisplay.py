@@ -11,9 +11,10 @@ class FramebufferStrokeDisplay:
         """
         # Based on "Python GUI in Linux frame buffer"
         # http://www.karoltomala.com/blog/?p=679
-        #disp_no = os.getenv("DISPLAY")
-        #if disp_no:
-        #    print("I'm running under X display = {0}".format(disp_no))
+        disp_no = os.getenv("DISPLAY")
+        if disp_no:
+            print("I'm running under X display = {0}".format(disp_no))
+        os.unsetenv("DISPLAY")
 
         os.putenv('SDL_FBACCEL', '0')
         os.putenv('SDL_FBDEV', '/dev/fb0')
@@ -49,6 +50,8 @@ class FramebufferStrokeDisplay:
         self.clear()
         pygame.font.init()
         self.update()
+
+        os.putenv("DISPLAY", disp_no)
 
     def __del__(self):
         """

@@ -17,7 +17,10 @@ class FramebufferStrokeDisplay:
 
         # Check which frame buffer drivers are available
         # Start with fbcon since directfb hangs with composite output
-        drivers = ['fbcon', 'directfb', 'svgalib']
+        drivers = [#'fbcon',
+                   'directfb',
+                   'svgalib'
+                   ]
         found = False
         for driver in drivers:
             # Make sure that SDL_VIDEODRIVER is set
@@ -25,6 +28,7 @@ class FramebufferStrokeDisplay:
                 os.putenv('SDL_VIDEODRIVER', driver)
             try:
                 pygame.display.init()
+                print(f"Driver: {driver} opened.")
             except pygame.error:
                 print(f"Driver: {driver} failed.")
                 continue

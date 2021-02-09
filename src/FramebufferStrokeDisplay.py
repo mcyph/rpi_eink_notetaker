@@ -87,10 +87,12 @@ class FramebufferStrokeDisplay:
                 for x, y in stroke
             ]
             pygame.draw.lines(self.stroke_surface, (255, 255, 255), False, stroke)
-            self.__update_regions.append(pygame.Rect(min([x for x, y in stroke]),
-                                                     min([y for x, y in stroke]),
-                                                     max([x for x, y in stroke]),
-                                                     max([y for x, y in stroke])))
+            xmin = min([x for x, y in stroke])
+            ymin = min([y for x, y in stroke])
+            self.__update_regions.append(pygame.Rect(xmin,
+                                                     ymin,
+                                                     max([x for x, y in stroke])-xmin,
+                                                     max([y for x, y in stroke])-ymin))
         self.__current_id = len(strokes)
 
         cursor_pos = [
@@ -100,14 +102,8 @@ class FramebufferStrokeDisplay:
         if abs(cursor_pos[0]-self.__cursor_pos[0]) > 20 or abs(cursor_pos[1]-self.__cursor_pos[1]) > 20:
             self.screen.blit(self.cursor_surface, cursor_pos)
 
-            self.__update_regions.append(pygame.Rect(self.__cursor_pos[0],
-                                                     self.__cursor_pos[1],
-                                                     self.__cursor_pos[0] + 4,
-                                                     self.__cursor_pos[1] + 4))
-            self.__update_regions.append(pygame.Rect(cursor_pos[0],
-                                                     cursor_pos[1],
-                                                     cursor_pos[0]+4,
-                                                     cursor_pos[1]+4))
+            self.__update_regions.append(pygame.Rect(self.__cursor_pos[0], self.__cursor_pos[1], 4, 4))
+            self.__update_regions.append(pygame.Rect(cursor_pos[0], cursor_pos[1], 4, 4))
             self.__cursor_pos = cursor_pos
 
     def update(self):

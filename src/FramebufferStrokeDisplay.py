@@ -16,7 +16,7 @@ class FramebufferStrokeDisplay:
             print("I'm running under X display = {0}".format(disp_no))
         os.unsetenv("DISPLAY")
 
-        os.putenv('SDL_FBDEV', '/dev/fb0')
+        #os.putenv('SDL_FBDEV', '/dev/fb0')
 
         drivers = [#'RPI',
                    #'dispmanx',
@@ -49,9 +49,9 @@ class FramebufferStrokeDisplay:
 
         self.screen = pygame.display.set_mode(size,
                                               pygame.FULLSCREEN
-                                              #| pygame.DOUBLEBUF
-                                              | pygame.OPENGL
-                                              #| pygame.HWSURFACE
+                                              | pygame.DOUBLEBUF
+                                              #| pygame.OPENGL
+                                              | pygame.HWSURFACE
                                               )
         self.clear()
         pygame.mouse.set_visible(False)

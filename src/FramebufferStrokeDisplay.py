@@ -48,10 +48,11 @@ class FramebufferStrokeDisplay:
         print(f"Framebuffer size: {size[0]}x{size[1]}")
 
         self.screen = pygame.display.set_mode(size,
-                                              pygame.FULLSCREEN |
-                                              pygame.DOUBLEBUF |
-                                              pygame.OPENGL |
-                                              pygame.HWSURFACE)
+                                              pygame.FULLSCREEN
+                                              #| pygame.DOUBLEBUF
+                                              | pygame.OPENGL
+                                              #| pygame.HWSURFACE
+                                              )
         self.clear()
         pygame.mouse.set_visible(False)
         pygame.font.init()

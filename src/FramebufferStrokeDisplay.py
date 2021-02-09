@@ -53,6 +53,11 @@ class FramebufferStrokeDisplay:
 
         os.putenv("DISPLAY", disp_no)
 
+        self.cursor_surface = pygame.Surface((4, 4))
+        self.stroke_surface = pygame.Surface(size)
+        pygame.draw.ellipse(self.cursor_surface, (255, 0, 0), [0, 0, 4, 4])
+        self.__current_id = 0
+
     def __del__(self):
         """
         Destructor to make sure pygame shuts down, etc.
@@ -63,25 +68,21 @@ class FramebufferStrokeDisplay:
         self.screen.fill((0, 0, 0))
 
     def draw(self, strokes, cursor_pos):
+        if len(strokes) <= self.__current_id:
+            self.__current_id = 0
 
-
-        for stroke in strokes:
+        for stroke in strokes[self.__current_id:]:
             stroke = [
-                (self.size[0]-round(y*(self.size[0]/1080.0)),
-                 round(x*(self.size[1]/1920.0)))
+                (self.size[0]-round(y*(self.size[0]/1080.0)), round(x*(self.size[1]/1920.0)))
                 for x, y in stroke
             ]
-            #stroke = [
-            #    (round(x*(self.size[0]/1920.0)), round(y*(self.size[1]/1080.0)))
-            #    for x, y in stroke
-            #]
-            pygame.draw.lines(self.screen, (255, 255, 255), False,
-                              stroke)
+            pygame.draw.lines(self.stroke_surface, (255, 255, 255), False, stroke)
+        self.__current_id = len(strokes)
 
-        pygame.draw.ellipse(self.screen, (255, 0, 0),
-                            [round(cursor_pos[1] * (self.size[0] / 1080.0)) - 2,
-                             round(cursor_pos[0] * (self.size[1] / 1920.0)) - 2,
-                             4, 4])
+        self.screen.blit(self.stroke_surface, [0, 0])
+        self.screen.blit(self.cursor_surface,
+                         [self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
+                          round(cursor_pos[0]*(self.size[1]/1920.0))-2])
 
     def update(self):
         pygame.display.update()

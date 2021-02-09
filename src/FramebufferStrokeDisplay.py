@@ -91,6 +91,11 @@ class FramebufferStrokeDisplay:
                  round(x*(self.size[1]/1920.0)))
                 for x, y in stroke
             ]
+            if not stroke:
+                continue
+            elif len(stroke) == 1:
+                stroke = stroke*2
+
             pygame.draw.lines(self.stroke_surface, (255, 255, 255), False, stroke)
             xmin = min([x for x, y in stroke])
             ymin = min([y for x, y in stroke])

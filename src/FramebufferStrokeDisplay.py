@@ -66,7 +66,7 @@ class FramebufferStrokeDisplay:
         for stroke in strokes:
             stroke = [
                 (self.size[0]-round(y*(self.size[0]/1080.0)),
-                 self.size[1]-round(x*(self.size[1]/1920.0)))
+                 round(x*(self.size[1]/1920.0)))
                 for x, y in stroke
             ]
             #stroke = [

@@ -15,7 +15,7 @@ class FramebufferStrokeDisplay:
         if disp_no:
             print("I'm running under X display = {0}".format(disp_no))
         os.unsetenv("DISPLAY")
-
+        
         #os.putenv('SDL_FBDEV', '/dev/fb0')
 
         # Check which frame buffer drivers are available
@@ -43,6 +43,8 @@ class FramebufferStrokeDisplay:
 
         if not found:
             raise Exception('No suitable video driver found!')
+
+        print("SDL DRIVER:", pygame.display.get_driver())
 
         size = self.size = (pygame.display.Info().current_w,
                             pygame.display.Info().current_h)

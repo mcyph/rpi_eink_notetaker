@@ -147,7 +147,9 @@ if __name__ == '__main__':
         DOCUMENTS[0] = HandwrittenDocuments()
         cherrypy.quickstart(APP[0])
 
+    print("CREATING FB STROKE DISPLAY!")
     fb_stroke_display = FramebufferStrokeDisplay()
+    print("CREATE OK - RUNNING SERVER!")
     _thread.start_new_thread(run, ())
 
     def on_draw_end(stroke):
@@ -160,5 +162,6 @@ if __name__ == '__main__':
         fb_stroke_display.draw(strokes, [x, y])
         fb_stroke_display.update()
 
+    print("RUNNING TABLET TRACKER!")
     w = FullscreenTabletTracker(on_draw_end, on_motion)
     w.tk.mainloop()

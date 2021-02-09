@@ -53,18 +53,14 @@ class FramebufferStrokeDisplay:
         self.screen.fill((0, 0, 0))
 
     def draw(self, strokes, cursor_pos):
-        strokes_out = []
         for stroke in strokes:
             stroke = [
-                (round(x*(self.size[0]/1920.0)),
-                 round(y*(self.size[1]/1080.0)))
+                (round(x*(self.size[0]/1920.0)), round(y*(self.size[1]/1080.0)))
                 for x, y in stroke
             ]
-            strokes_out.append(stroke)
-        strokes = strokes_out
+            pygame.draw.lines(self.screen, (255, 255, 255), False,
+                              stroke)
 
-        pygame.draw.lines(self.screen, (255, 255, 255), False,
-                          strokes)
         pygame.draw.ellipse(self.screen, (0, 255, 255),
                             [cursor_pos[0], cursor_pos[1], 1, 1])
 

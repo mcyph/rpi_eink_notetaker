@@ -158,7 +158,6 @@ if __name__ == '__main__':
 
     def on_motion(x, y):
         strokes = APP[0].get_strokes() or []
-        fb_stroke_display.clear()
         fb_stroke_display.draw(strokes, [x, y])
         fb_stroke_display.update()
 

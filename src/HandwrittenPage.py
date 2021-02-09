@@ -11,7 +11,10 @@ class HandwrittenPage:
         self.undo_index = len(self.__strokes)
 
     def get_strokes(self):
-        return copy.deepcopy(self.__strokes[:self.undo_index])
+        if self.undo_index == len(self.__strokes):
+            return self.__strokes
+        else:
+            return self.__strokes[:self.undo_index]
 
     def get_image(self):
         im = Image.new(mode='RGB', size=RESOLUTION, color=(255, 255, 255))

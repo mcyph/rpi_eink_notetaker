@@ -55,17 +55,18 @@ class FramebufferStrokeDisplay:
                                               #| pygame.OPENGL
                                               | pygame.HWSURFACE
                                               )
+        
         os.putenv("DISPLAY", disp_no)
-
-        self.clear()
         pygame.mouse.set_visible(False)
         pygame.font.init()
-        self.update()
 
         self.cursor_surface = pygame.Surface((4, 4))
         self.blank_surface = pygame.Surface((4, 4))
         self.stroke_surface = pygame.Surface(size)
         pygame.draw.ellipse(self.cursor_surface, (255, 0, 0), [0, 0, 4, 4])
+
+        self.clear()
+        self.update()
 
     def __del__(self):
         """

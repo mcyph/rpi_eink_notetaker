@@ -34,7 +34,7 @@ class FramebufferStrokeDisplay:
         if not found:
             raise Exception('No suitable video driver found!')
 
-        size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
+        size = self.size = (pygame.display.Info().current_w, pygame.display.Info().current_h)
         print(f"Framebuffer size: {size[0]}x{size[1]}")
 
         self.screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
@@ -52,6 +52,15 @@ class FramebufferStrokeDisplay:
         self.screen.fill((0, 0, 0))
 
     def draw(self, strokes, cursor_pos):
+        strokes_out = []
+        for stroke in strokes:
+            stroke = [
+                (round(x*(self.size[0]/1920.0)), round(y*(self.size[1]/1080.0)))
+                for x, y in stroke
+            ]
+            strokes_out.append(stroke)
+        strokes = strokes_out
+
         self.screen.aalines(color=(255, 255, 255), closed=False, points=strokes)
         self.screen.ellipse(color=(0, 255, 255), rect=[cursor_pos[0], cursor_pos[1], 1, 1])
 

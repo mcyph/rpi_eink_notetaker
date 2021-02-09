@@ -16,7 +16,7 @@ class FramebufferStrokeDisplay:
             print("I'm running under X display = {0}".format(disp_no))
         os.unsetenv("DISPLAY")
 
-        os.putenv('SDL_FBDEV', '/dev/fb0')
+        #os.putenv('SDL_FBDEV', '/dev/fb0')
 
         # Check which frame buffer drivers are available
         # Start with fbcon since directfb hangs with composite output

@@ -18,7 +18,7 @@ class FramebufferStrokeDisplay:
 
         #os.putenv('SDL_FBDEV', '/dev/fb0')
 
-        drivers = [#'RPI',
+        drivers = ['RPI',
                    'dispmanx',
                    'opengl',
                    'fbcon',

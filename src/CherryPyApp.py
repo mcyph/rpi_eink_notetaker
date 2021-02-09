@@ -147,8 +147,8 @@ if __name__ == '__main__':
         DOCUMENTS[0] = HandwrittenDocuments()
         cherrypy.quickstart(APP[0])
 
-    _thread.start_new_thread(run, ())
     fb_stroke_display = FramebufferStrokeDisplay()
+    _thread.start_new_thread(run, ())
 
     def on_draw_end(stroke):
         stroke = [(x, max(0, y+Y_OFFSET)) for x, y in stroke]

@@ -85,4 +85,4 @@ class FramebufferStrokeDisplay:
                           round(cursor_pos[0]*(self.size[1]/1920.0))-2])
 
     def update(self):
-        pygame.display.update()
+        pygame.display.flip()

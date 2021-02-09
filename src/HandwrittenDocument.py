@@ -106,7 +106,7 @@ class HandwrittenDocument:
         IMG_WIDTH = A4_SIZE[0]//2
         IMG_HEIGHT = A4_SIZE[1]//2
 
-        IMG_HEADER = A4_SIZE[1]//10
+        IMG_HEADER = A4_SIZE[1]//5
         IMG_HEIGHT -= IMG_HEADER//2
 
         for page_num in range(len(self)):

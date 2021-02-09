@@ -15,7 +15,7 @@ class FramebufferStrokeDisplay:
         if disp_no:
             print("I'm running under X display = {0}".format(disp_no))
         os.unsetenv("DISPLAY")
-        
+
         #os.putenv('SDL_FBDEV', '/dev/fb0')
 
         # Check which frame buffer drivers are available
@@ -84,6 +84,8 @@ class FramebufferStrokeDisplay:
                 for x, y in stroke
             ]
             pygame.draw.lines(self.stroke_surface, (255, 255, 255), False, stroke)
+            self.__update_regions.append((min([x for x, y in stroke]), min([y for x, y in stroke]),
+                                          max([x for x, y in stroke]), max([y for x, y in stroke])))
         self.__current_id = len(strokes)
 
         self.screen.blit(self.cursor_surface,

@@ -51,6 +51,10 @@ class App(object):
         self.__current_document = document
         self.__current_page = page
 
+        fb_stroke_display.clear()
+        fb_stroke_display.draw(self.__current_page.get_strokes(), [0, 0])
+        fb_stroke_display.update()
+
         edit_page_template = env.get_template('edit_page.html')
         return edit_page_template.render(
             page_name=page_name,

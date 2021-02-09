@@ -106,6 +106,9 @@ class HandwrittenDocument:
         IMG_WIDTH = A4_SIZE[0]//2
         IMG_HEIGHT = A4_SIZE[1]//2
 
+        IMG_HEADER = A4_SIZE[1]//10
+        IMG_HEIGHT -= IMG_HEADER//2
+
         for page_num in range(len(self)):
             image = ImageReader(self[page_num].get_image())
 
@@ -113,13 +116,13 @@ class HandwrittenDocument:
                 data_out = BytesIO()
                 _canvas = canvas.Canvas(data_out, pagesize=A4)
 
-                _canvas.drawImage(image, 0, A4_SIZE[1]//2, IMG_WIDTH, IMG_HEIGHT)
+                _canvas.drawImage(image, 0,             A4_SIZE[1]//2, IMG_WIDTH, IMG_HEIGHT)
             elif page_num % 4 == 1:
                 _canvas.drawImage(image, A4_SIZE[0]//2, A4_SIZE[1]//2, IMG_WIDTH, IMG_HEIGHT)
             elif page_num % 4 == 2:
-                _canvas.drawImage(image, 0, 0, IMG_WIDTH, IMG_HEIGHT)
+                _canvas.drawImage(image, 0,             0,             IMG_WIDTH, IMG_HEIGHT)
             elif page_num % 4 == 3:
-                _canvas.drawImage(image, A4_SIZE[0]//2, 0, IMG_WIDTH, IMG_HEIGHT)
+                _canvas.drawImage(image, A4_SIZE[0]//2, 0,             IMG_WIDTH, IMG_HEIGHT)
 
                 _canvas.save()
                 page = PdfFileReader(BytesIO(data_out.getvalue())).getPage(0)

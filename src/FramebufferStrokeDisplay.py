@@ -11,6 +11,10 @@ class FramebufferStrokeDisplay:
         """
         # Based on "Python GUI in Linux frame buffer"
         # http://www.karoltomala.com/blog/?p=679
+        self.__current_id = 0
+        self.__update_regions = []
+        self.__cursor_pos = [0, 0]
+
         disp_no = os.getenv("DISPLAY")
         if disp_no:
             print("I'm running under X display = {0}".format(disp_no))
@@ -42,30 +46,25 @@ class FramebufferStrokeDisplay:
             raise Exception('No suitable video driver found!')
 
         print("SDL DRIVER:", pygame.display.get_driver())
-
         size = self.size = (pygame.display.Info().current_w,
                             pygame.display.Info().current_h)
         print(f"Framebuffer size: {size[0]}x{size[1]}")
-
         self.screen = pygame.display.set_mode(size,
                                               pygame.FULLSCREEN
                                               | pygame.DOUBLEBUF
                                               #| pygame.OPENGL
                                               | pygame.HWSURFACE
                                               )
+        os.putenv("DISPLAY", disp_no)
+
         self.clear()
         pygame.mouse.set_visible(False)
         pygame.font.init()
         self.update()
 
-        os.putenv("DISPLAY", disp_no)
-
         self.cursor_surface = pygame.Surface((4, 4))
         self.stroke_surface = pygame.Surface(size)
         pygame.draw.ellipse(self.cursor_surface, (255, 0, 0), [0, 0, 4, 4])
-        self.__current_id = 0
-        self.__update_regions = []
-        self.__cursor_pos = [0, 0]
 
     def __del__(self):
         """

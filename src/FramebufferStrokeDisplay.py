@@ -20,7 +20,7 @@ class FramebufferStrokeDisplay:
 
         # Check which frame buffer drivers are available
         # Start with fbcon since directfb hangs with composite output
-        drivers = [#'fbcon',
+        drivers = ['fbcon',
                    'directfb',
                    'svgalib',
                    ]
@@ -79,7 +79,7 @@ class FramebufferStrokeDisplay:
             pygame.draw.lines(self.stroke_surface, (255, 255, 255), False, stroke)
         self.__current_id = len(strokes)
 
-        self.screen.blit(self.stroke_surface, [0, 0])
+        #self.screen.blit(self.stroke_surface, [0, 0])
         self.screen.blit(self.cursor_surface,
                          [self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
                           round(cursor_pos[0]*(self.size[1]/1920.0))-2])

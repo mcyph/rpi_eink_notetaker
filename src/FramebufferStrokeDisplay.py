@@ -86,24 +86,24 @@ class FramebufferStrokeDisplay:
                 for x, y in stroke
             ]
             pygame.draw.lines(self.stroke_surface, (255, 255, 255), False, stroke)
-            self.__update_regions.append((min([x for x, y in stroke]),
-                                          min([y for x, y in stroke]),
-                                          max([x for x, y in stroke]),
-                                          max([y for x, y in stroke])))
+            self.__update_regions.append(pygame.Rect(min([x for x, y in stroke]),
+                                                     min([y for x, y in stroke]),
+                                                     max([x for x, y in stroke]),
+                                                     max([y for x, y in stroke])))
         self.__current_id = len(strokes)
 
         self.screen.blit(self.cursor_surface,
                          [self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
                           round(cursor_pos[0]*(self.size[1]/1920.0))-2])
 
-        self.__update_regions.append((self.__cursor_pos[0],
-                                      self.__cursor_pos[1],
-                                      self.__cursor_pos[0] + 4,
-                                      self.__cursor_pos[1] + 4))
-        self.__update_regions.append((cursor_pos[0],
-                                      cursor_pos[1],
-                                      cursor_pos[0]+4,
-                                      cursor_pos[1]+4))
+        self.__update_regions.append(pygame.Rect(self.__cursor_pos[0],
+                                                 self.__cursor_pos[1],
+                                                 self.__cursor_pos[0] + 4,
+                                                 self.__cursor_pos[1] + 4))
+        self.__update_regions.append(pygame.Rect(cursor_pos[0],
+                                                 cursor_pos[1],
+                                                 cursor_pos[0]+4,
+                                                 cursor_pos[1]+4))
         self.__cursor_pos = cursor_pos
 
     def update(self):

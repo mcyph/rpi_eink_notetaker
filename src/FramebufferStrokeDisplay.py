@@ -53,7 +53,7 @@ class FramebufferStrokeDisplay:
                                               pygame.FULLSCREEN
                                               #| pygame.DOUBLEBUF
                                               #| pygame.OPENGL
-                                              | pygame.HWSURFACE
+                                              #| pygame.HWSURFACE
                                               )
         os.putenv("DISPLAY", disp_no)
 

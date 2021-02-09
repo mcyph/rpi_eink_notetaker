@@ -53,6 +53,9 @@ class FullscreenTabletTracker:
         self.state = False
         self.tk.attributes("-fullscreen", False)
 
+        # NOTE ME!
+        raise SystemExit()
+
 
 if __name__ == '__main__':
     def fn(points):

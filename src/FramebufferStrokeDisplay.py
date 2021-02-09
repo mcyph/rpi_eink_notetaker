@@ -51,9 +51,9 @@ class FramebufferStrokeDisplay:
         print(f"Framebuffer size: {size[0]}x{size[1]}")
         self.screen = pygame.display.set_mode(size,
                                               pygame.FULLSCREEN
-                                              | pygame.DOUBLEBUF
+                                              #| pygame.DOUBLEBUF
                                               #| pygame.OPENGL
-                                              | pygame.HWSURFACE
+                                              #| pygame.HWSURFACE
                                               )
         os.putenv("DISPLAY", disp_no)
 
@@ -78,6 +78,7 @@ class FramebufferStrokeDisplay:
     def draw(self, strokes, cursor_pos):
         if len(strokes) <= self.__current_id:
             self.__current_id = 0
+            self.clear()
 
         for stroke in strokes[self.__current_id:]:
             stroke = [

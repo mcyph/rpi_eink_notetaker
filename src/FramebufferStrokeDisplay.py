@@ -75,6 +75,7 @@ class FramebufferStrokeDisplay:
 
     def clear(self):
         self.screen.fill((0, 0, 0))
+        pygame.display.update()
 
     def draw(self, strokes, cursor_pos):
         if len(strokes) < self.__current_id:

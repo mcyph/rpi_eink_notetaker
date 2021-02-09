@@ -18,9 +18,9 @@ class FramebufferStrokeDisplay:
 
         #os.putenv('SDL_FBDEV', '/dev/fb0')
 
-        drivers = [#'RPI',
+        drivers = ['RPI',
                    'dispmanx',
-                   #'opengl',
+                   'opengl',
                    'fbcon',
                    'directfb',
                    'svgalib',
@@ -49,9 +49,9 @@ class FramebufferStrokeDisplay:
 
         self.screen = pygame.display.set_mode(size,
                                               pygame.FULLSCREEN
-                                              #| pygame.DOUBLEBUF
-                                              | pygame.OPENGL
-                                              #| pygame.HWSURFACE
+                                              | pygame.DOUBLEBUF
+                                              #| pygame.OPENGL
+                                              | pygame.HWSURFACE
                                               )
         self.clear()
         pygame.mouse.set_visible(False)

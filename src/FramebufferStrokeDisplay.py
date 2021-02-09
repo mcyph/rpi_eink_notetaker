@@ -15,11 +15,14 @@ class FramebufferStrokeDisplay:
         #if disp_no:
         #    print("I'm running under X display = {0}".format(disp_no))
 
+        os.putenv('SDL_FBACCEL', '0')
+        os.putenv('SDL_FBDEV', '/dev/fb0')
+
         # Check which frame buffer drivers are available
         # Start with fbcon since directfb hangs with composite output
-        drivers = [#'fbcon',
+        drivers = ['fbcon',
                    'directfb',
-                   'svgalib'
+                   'svgalib',
                    ]
         found = False
         for driver in drivers:

@@ -55,7 +55,7 @@ class FramebufferStrokeDisplay:
                                               #| pygame.OPENGL
                                               | pygame.HWSURFACE
                                               )
-        
+
         os.putenv("DISPLAY", disp_no)
         pygame.mouse.set_visible(False)
         pygame.font.init()

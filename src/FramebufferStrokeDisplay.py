@@ -55,14 +55,15 @@ class FramebufferStrokeDisplay:
         strokes_out = []
         for stroke in strokes:
             stroke = [
-                (round(x*(self.size[0]/1920.0)), round(y*(self.size[1]/1080.0)))
+                (round(x*(self.size[0]/1920.0)),
+                 round(y*(self.size[1]/1080.0)))
                 for x, y in stroke
             ]
             strokes_out.append(stroke)
         strokes = strokes_out
 
-        self.screen.aalines(color=(255, 255, 255), closed=False, points=strokes)
-        self.screen.ellipse(color=(0, 255, 255), rect=[cursor_pos[0], cursor_pos[1], 1, 1])
+        pygame.draw.aalines(self.screen, color=(255, 255, 255), closed=False, points=strokes)
+        pygame.draw.ellipse(self.screen, color=(0, 255, 255), rect=[cursor_pos[0], cursor_pos[1], 1, 1])
 
     def update(self):
         pygame.display.update()

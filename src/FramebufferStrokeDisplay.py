@@ -112,5 +112,6 @@ class FramebufferStrokeDisplay:
 
     def update(self):
         if self.__update_regions:
-            pygame.display.update(self.__update_regions)
+            #pygame.display.update(self.__update_regions)
+            pygame.display.flip()
         self.__update_regions = []

@@ -16,12 +16,11 @@ class FramebufferStrokeDisplay:
             print("I'm running under X display = {0}".format(disp_no))
         os.unsetenv("DISPLAY")
 
-        os.putenv('SDL_FBACCEL', '0')
         os.putenv('SDL_FBDEV', '/dev/fb0')
 
         # Check which frame buffer drivers are available
         # Start with fbcon since directfb hangs with composite output
-        drivers = ['fbcon',
+        drivers = [#'fbcon',
                    'directfb',
                    'svgalib',
                    ]
@@ -48,6 +47,7 @@ class FramebufferStrokeDisplay:
 
         self.screen = pygame.display.set_mode(size, pygame.FULLSCREEN)
         self.clear()
+        pygame.mouse.set_visible(False)
         pygame.font.init()
         self.update()
 

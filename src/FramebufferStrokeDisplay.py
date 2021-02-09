@@ -51,9 +51,9 @@ class FramebufferStrokeDisplay:
         print(f"Framebuffer size: {size[0]}x{size[1]}")
         self.screen = pygame.display.set_mode(size,
                                               pygame.FULLSCREEN
-                                              #| pygame.DOUBLEBUF
+                                              | pygame.DOUBLEBUF
                                               #| pygame.OPENGL
-                                              #| pygame.HWSURFACE
+                                              | pygame.HWSURFACE
                                               )
         os.putenv("DISPLAY", disp_no)
 
@@ -97,17 +97,18 @@ class FramebufferStrokeDisplay:
             self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
             round(cursor_pos[0]*(self.size[1]/1920.0))-2
         ]
-        self.screen.blit(self.cursor_surface, cursor_pos)
+        if abs(cursor_pos[0]-self.__cursor_pos[0]) > 20 or abs(cursor_pos[1]-self.__cursor_pos[1]) > 20:
+            self.screen.blit(self.cursor_surface, cursor_pos)
 
-        self.__update_regions.append(pygame.Rect(self.__cursor_pos[0],
-                                                 self.__cursor_pos[1],
-                                                 self.__cursor_pos[0] + 4,
-                                                 self.__cursor_pos[1] + 4))
-        self.__update_regions.append(pygame.Rect(cursor_pos[0],
-                                                 cursor_pos[1],
-                                                 cursor_pos[0]+4,
-                                                 cursor_pos[1]+4))
-        self.__cursor_pos = cursor_pos
+            self.__update_regions.append(pygame.Rect(self.__cursor_pos[0],
+                                                     self.__cursor_pos[1],
+                                                     self.__cursor_pos[0] + 4,
+                                                     self.__cursor_pos[1] + 4))
+            self.__update_regions.append(pygame.Rect(cursor_pos[0],
+                                                     cursor_pos[1],
+                                                     cursor_pos[0]+4,
+                                                     cursor_pos[1]+4))
+            self.__cursor_pos = cursor_pos
 
     def update(self):
         if self.__update_regions:

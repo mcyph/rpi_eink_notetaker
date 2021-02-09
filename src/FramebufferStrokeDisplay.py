@@ -53,7 +53,7 @@ class FramebufferStrokeDisplay:
                                               pygame.FULLSCREEN
                                               #| pygame.DOUBLEBUF
                                               #| pygame.OPENGL
-                                              #| pygame.HWSURFACE
+                                              | pygame.HWSURFACE
                                               )
         os.putenv("DISPLAY", disp_no)
 
@@ -76,7 +76,7 @@ class FramebufferStrokeDisplay:
         self.screen.fill((0, 0, 0))
 
     def draw(self, strokes, cursor_pos):
-        if len(strokes) <= self.__current_id:
+        if len(strokes) < self.__current_id:
             self.__current_id = 0
             self.clear()
 
@@ -89,8 +89,7 @@ class FramebufferStrokeDisplay:
             pygame.draw.lines(self.stroke_surface, (255, 255, 255), False, stroke)
             xmin = min([x for x, y in stroke])
             ymin = min([y for x, y in stroke])
-            self.__update_regions.append(pygame.Rect(xmin,
-                                                     ymin,
+            self.__update_regions.append(pygame.Rect(xmin, ymin,
                                                      max([x for x, y in stroke])-xmin,
                                                      max([y for x, y in stroke])-ymin))
         self.__current_id = len(strokes)

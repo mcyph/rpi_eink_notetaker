@@ -36,6 +36,7 @@ class FullscreenTabletTracker:
 
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         self.device = [i for i in devices if i.name == DEVICE_NAME][0]
+        print("USING DEVICE:", self.device)
         _thread.start_new_thread(self.listen, ())
         
     def listen(self):
@@ -56,6 +57,7 @@ class FullscreenTabletTracker:
             elif event.type == ecodes.EV_KEY:
                 if event.code == ecodes.BTN_TOUCH:
                     self.on_mouse_up_down(event.value)
+            print(categorize(event), event.type, event.code, event.value)
 
     def motion(self, x, y):
         if self.mouse_down:

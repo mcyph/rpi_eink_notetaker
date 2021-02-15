@@ -47,22 +47,22 @@ class FullscreenTabletTracker:
         for event in dev.read_loop():
             if event.type == ecodes.EV_ABS:
                 if event.code == ecodes.ABS_X:
-                    self.__x = event.value
+                    self.__x = int(event.value)
                     xx += 1
                     if xx % 2 == 0:
                         self.motion(self.__x, self.__y)
                     print("ABS_X!")
                 elif event.code == ecodes.ABS_Y:
-                    self.__y = event.value
+                    self.__y = int(event.value)
                     xx += 1
                     if xx % 2 == 0:
                         self.motion(self.__x, self.__y)
                     print("ABS_Y!")
-                print("EV_ABS!!!", event.code, ecodes.ABS_X, ecodes.ABS_Y)
+                print("EV_ABS!!!", event.code)
             elif event.type == ecodes.EV_KEY:
                 #if event.code == ecodes.BTN_TOUCH:
-                self.on_mouse_up_down(event.value)
-                print("EV_KEY!!!", event.value)
+                self.on_mouse_up_down(bool(int(event.value)))
+                print("EV_KEY!!!", bool(int(event.value)))
             print(categorize(event), event.type, event.code, event.value)
 
     def motion(self, x, y):

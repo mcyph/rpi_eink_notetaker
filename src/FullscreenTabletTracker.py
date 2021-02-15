@@ -38,31 +38,36 @@ class FullscreenTabletTracker:
         print("ENUMERATING DEVICES!")
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         self.device = [i for i in devices if i.name == DEVICE_NAME][0]
+        self.__max_x = float(self.device.capabilities()[ecodes.EV_ABS][0].max)
+        self.__max_y = float(self.device.capabilities()[ecodes.EV_ABS][1].max)
+
         print("USING DEVICE:", self.device)
         _thread.start_new_thread(self.listen, ())
         
     def listen(self):
-        xx = 0
+        self.__x = None
+        self.__y = None
+
         dev = InputDevice(self.device)
         for event in dev.read_loop():
             if event.type == ecodes.EV_ABS:
                 if event.code == ecodes.ABS_X:
-                    self.__x = int(event.value)
-                    xx += 1
-                    if xx % 2 == 0:
-                        self.motion(self.__x, self.__y)
+                    self.__x = round(int(event.value) / self.__max_x * RESOLUTION[0])
                     print("ABS_X!")
                 elif event.code == ecodes.ABS_Y:
-                    self.__y = int(event.value)
-                    xx += 1
-                    if xx % 2 == 0:
-                        self.motion(self.__x, self.__y)
+                    self.__y = round(int(event.value) / self.__max_y * RESOLUTION[1])
                     print("ABS_Y!")
                 print("EV_ABS!!!", event.code)
             elif event.type == ecodes.EV_KEY:
                 #if event.code == ecodes.BTN_TOUCH:
                 self.on_mouse_up_down(bool(int(event.value)))
                 print("EV_KEY!!!", bool(int(event.value)))
+            elif event.type == ecodes.SYN_REPORT and self.__x is not None and self.__y is not None:
+                self.motion(self.__x, self.__y)
+                self.__x = None
+                self.__y = None
+                print("SYN_REPORT!!!", bool(int(event.value)))
+
             print(categorize(event), event.type, event.code, event.value)
 
     def motion(self, x, y):

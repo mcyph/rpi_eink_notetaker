@@ -67,7 +67,7 @@ class FramebufferStrokeDisplay:
         pygame.draw.ellipse(self.cursor_surface, (255, 0, 0), [0, 0, 4, 4])
 
         for x in range(11):
-            y = size[1]/10*x
+            y = int(size[1]/10.0*x)
             pygame.draw.line(self.rules_surface, (0, 0, 100), (0, y), (size[0], y))
 
         self.clear()

@@ -38,8 +38,8 @@ class FullscreenTabletTracker:
         print("ENUMERATING DEVICES!")
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         self.device = [i for i in devices if i.name == DEVICE_NAME][0]
-        self.__max_x = float(self.device.capabilities()[ecodes.EV_ABS][0].max)
-        self.__max_y = float(self.device.capabilities()[ecodes.EV_ABS][1].max)
+        self.__max_x = float(self.device.capabilities()[ecodes.EV_ABS][0][1].max)
+        self.__max_y = float(self.device.capabilities()[ecodes.EV_ABS][1][1].max)
 
         print("USING DEVICE:", self.device)
         _thread.start_new_thread(self.listen, ())

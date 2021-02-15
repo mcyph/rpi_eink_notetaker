@@ -66,9 +66,11 @@ class FramebufferStrokeDisplay:
         self.rules_surface = pygame.Surface(size)
         pygame.draw.ellipse(self.cursor_surface, (255, 0, 0), [0, 0, 4, 4])
 
+        self.__lines_regions = []
         for x in range(11):
             y = int(size[1]/10.0*x)
             pygame.draw.line(self.rules_surface, (0, 0, 100), (0, y), (size[0], y))
+            self.__lines_regions.append(pygame.Rect(0, y, size[0], 1))
 
         self.clear()
         self.update()
@@ -112,6 +114,7 @@ class FramebufferStrokeDisplay:
 
         if changed:
             self.screen.blit(self.rules_surface, (0, 0))
+            self.__update_regions.extend(self.__lines_regions)
             self.screen.blit(self.stroke_surface, (0, 0))
         self.__current_id = len(strokes)
 

@@ -12,6 +12,7 @@ from constants import RESOLUTION
 
 load_dotenv(override=True)
 DEVICE_NAME = environ['TABLET_DEVICE_NAME'].strip()
+print("SEARCHING FOR DEVICE NAME:", DEVICE_NAME)
 
 
 class FullscreenTabletTracker:
@@ -34,6 +35,7 @@ class FullscreenTabletTracker:
         self.points = []
         self.mouse_down = False
 
+        print("ENUMERATING DEVICES!")
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         self.device = [i for i in devices if i.name == DEVICE_NAME][0]
         print("USING DEVICE:", self.device)

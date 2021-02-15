@@ -12,7 +12,7 @@ from constants import RESOLUTION
 
 load_dotenv(override=True)
 DEVICE_NAME = environ['TABLET_DEVICE_NAME'].strip()
-print("SEARCHING FOR DEVICE NAME:", DEVICE_NAME)
+#print("SEARCHING FOR DEVICE NAME:", DEVICE_NAME)
 
 
 class FullscreenTabletTracker:
@@ -35,13 +35,13 @@ class FullscreenTabletTracker:
         self.points = []
         self.mouse_down = False
 
-        print("ENUMERATING DEVICES!")
+        #print("ENUMERATING DEVICES!")
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         self.device = [i for i in devices if i.name == DEVICE_NAME][0]
         self.__max_x = float(self.device.capabilities()[ecodes.EV_ABS][0][1].max)
         self.__max_y = float(self.device.capabilities()[ecodes.EV_ABS][1][1].max)
 
-        print("USING DEVICE:", self.device)
+        #print("USING DEVICE:", self.device)
         _thread.start_new_thread(self.listen, ())
         
     def listen(self):
@@ -53,22 +53,22 @@ class FullscreenTabletTracker:
             if event.type == ecodes.EV_ABS:
                 if event.code == ecodes.ABS_X:
                     self.__x = round(int(event.value) / self.__max_x * RESOLUTION[0])
-                    print("ABS_X!")
+                    #print("ABS_X!")
                 elif event.code == ecodes.ABS_Y:
                     self.__y = round(int(event.value) / self.__max_y * RESOLUTION[1])
-                    print("ABS_Y!")
-                print("EV_ABS!!!", event.code)
+                    #print("ABS_Y!")
+                #print("EV_ABS!!!", event.code)
             elif event.type == ecodes.EV_KEY:
                 #if event.code == ecodes.BTN_TOUCH:
                 self.on_mouse_up_down(bool(int(event.value)))
-                print("EV_KEY!!!", bool(int(event.value)))
+                #print("EV_KEY!!!", bool(int(event.value)))
             elif event.type == ecodes.SYN_REPORT and self.__x is not None and self.__y is not None:
                 self.motion(self.__x, self.__y)
                 self.__x = None
                 self.__y = None
-                print("SYN_REPORT!!!", bool(int(event.value)))
+                #print("SYN_REPORT!!!", bool(int(event.value)))
 
-            print(categorize(event), event.type, event.code, event.value)
+            #print(categorize(event), event.type, event.code, event.value)
 
     def motion(self, x, y):
         if self.mouse_down:
@@ -77,7 +77,7 @@ class FullscreenTabletTracker:
         
     def on_mouse_up_down(self, value):
         if self.points:
-            print("ON DRAW END:", self.points)
+            #print("ON DRAW END:", self.points)
             self.on_draw_end(self.points)
         self.points = []
         self.mouse_down = value

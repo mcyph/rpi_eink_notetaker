@@ -1,8 +1,17 @@
+import evdev
 import _thread
 from tkinter import *
-from pynput import mouse
+from pathlib import Path
+from os import environ
+from os.path import expanduser
+from dotenv import load_dotenv
+from evdev import InputDevice, categorize, ecodes
 
 from constants import RESOLUTION
+
+
+load_dotenv(override=True)
+DEVICE_NAME = Path(expanduser(environ['TABLET_DEVICE_NAME']))
 
 
 class FullscreenTabletTracker:
@@ -24,28 +33,40 @@ class FullscreenTabletTracker:
         
         self.points = []
         self.mouse_down = False
+
+        devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
+        self.device = [i for i in devices if i.name == DEVICE_NAME]
         _thread.start_new_thread(self.listen, ())
         
     def listen(self):
-        listener = mouse.Listener(on_move=self.motion, 
-                                  on_click=self.on_click)
-        listener.start()
-        while True:
-            listener.wait()
-        
+        xx = 0
+        dev = InputDevice(self.device)
+        for event in dev.read_loop():
+            if event.type == ecodes.EV_ABS:
+                if event.code == ecodes.ABS_X:
+                    self.__x = event.value
+                    xx += 1
+                    if xx % 2 == 0:
+                        self.motion(self.__x, self.__y)
+                elif event.code == ecodes.ABS_Y:
+                    self.__y = event.value
+                    xx += 1
+                    if xx % 2 == 0:
+                        self.motion(self.__x, self.__y)
+            elif event.type == ecodes.EV_KEY:
+                if event.code == ecodes.BTN_TOUCH:
+                    self.on_mouse_up_down(event.value)
+
     def motion(self, x, y):
         if self.mouse_down:
             self.points.append((x, y))
         self.on_motion(x, y)
         
-    def on_click(self, *args):
+    def on_mouse_up_down(self, value):
         if self.points:
             self.on_draw_end(self.points)
         self.points = []
-        self.mouse_down = args[-1]
-        
-    def release(self, event):
-        self.on_click(False)
+        self.mouse_down = value
 
     def toggle_fullscreen(self, event=None):
         self.state = not self.state  # Just toggling the boolean

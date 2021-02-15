@@ -71,6 +71,7 @@ class FramebufferStrokeDisplay:
             y = int(size[1]/10.0*x)
             pygame.draw.line(self.rules_surface, (0, 0, 100), (0, y), (size[0], y))
             self.__lines_regions.append(pygame.Rect(0, y, size[0], 1))
+        self.__update_regions.extend(self.__lines_regions)
 
         self.clear()
         self.update()

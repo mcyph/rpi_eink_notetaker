@@ -76,8 +76,8 @@ class FramebufferStrokeDisplay:
         pass
 
     def clear(self):
-        self.screen.fill((0, 0, 0, 0))
-        self.stroke_surface.fill((0, 0, 0, 0))
+        self.screen.fill(0)
+        self.stroke_surface.fill(0)
         self.draw_lines()
         pygame.display.update()
         self.__current_id = 0

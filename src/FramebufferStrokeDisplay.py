@@ -127,9 +127,9 @@ class FramebufferStrokeDisplay:
     def draw_lines(self):
         self.__lines_regions = []
         for x in range(11):
-            y = round((self.size[1] - 1) / 10.0 * x)
+            y = round((self.size[0] - 1) / 10.0 * x)
             pygame.draw.line(self.rules_surface, (0, 0, 200), (y, 0), (y, self.size[0]))
-            self.__lines_regions.append(pygame.Rect(0, y, self.size[0], 1))
+            self.__lines_regions.append(pygame.Rect(y, 0, 1, self.size[0]))
         self.screen.blit(self.rules_surface, (0, 0))
         self.__update_regions.extend(self.__lines_regions)
 

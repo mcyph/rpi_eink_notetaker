@@ -62,8 +62,8 @@ class FramebufferStrokeDisplay:
 
         self.cursor_surface = pygame.Surface((4, 4))
         self.blank_surface = pygame.Surface((4, 4))
-        self.stroke_surface = pygame.Surface(size)
-        self.rules_surface = pygame.Surface(size)
+        self.stroke_surface = pygame.Surface(size, pygame.SRCALPHA, 32)
+        self.rules_surface = pygame.Surface(size, pygame.SRCALPHA, 32)
         pygame.draw.ellipse(self.cursor_surface, (255, 0, 0), [0, 0, 4, 4])
 
         self.clear()

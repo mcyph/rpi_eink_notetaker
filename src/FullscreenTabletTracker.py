@@ -11,7 +11,7 @@ from constants import RESOLUTION
 
 
 load_dotenv(override=True)
-DEVICE_NAME = Path(expanduser(environ['TABLET_DEVICE_NAME']))
+DEVICE_NAME = environ['TABLET_DEVICE_NAME'].strip()
 
 
 class FullscreenTabletTracker:
@@ -35,7 +35,7 @@ class FullscreenTabletTracker:
         self.mouse_down = False
 
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
-        self.device = [i for i in devices if i.name == DEVICE_NAME]
+        self.device = [i for i in devices if i.name == DEVICE_NAME][0]
         _thread.start_new_thread(self.listen, ())
         
     def listen(self):

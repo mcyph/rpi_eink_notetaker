@@ -82,7 +82,7 @@ class FramebufferStrokeDisplay:
         self.__lines_regions = []
         for x in range(11):
             y = int(self.size[1] / 10.0 * x)
-            pygame.draw.line(self.rules_surface, (0, 0, 100), (0, y), (self.size[0], y))
+            pygame.draw.line(self.rules_surface, (0, 0, 200), (0, y), (self.size[0], y))
             self.__lines_regions.append(pygame.Rect(0, y, self.size[0], 1))
         self.screen.blit(self.rules_surface, (0, 0))
         self.__update_regions.extend(self.__lines_regions)
@@ -125,7 +125,7 @@ class FramebufferStrokeDisplay:
             self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
             round(cursor_pos[0]*(self.size[1]/1920.0))-2
         ]
-        if abs(cursor_pos[0]-self.__cursor_pos[0]) > 4 or abs(cursor_pos[1]-self.__cursor_pos[1]) > 4:
+        if abs(cursor_pos[0]-self.__cursor_pos[0]) > 2 or abs(cursor_pos[1]-self.__cursor_pos[1]) > 2:
             self.screen.blit(self.cursor_surface, cursor_pos)
             self.screen.blit(self.blank_surface, self.__cursor_pos)
 

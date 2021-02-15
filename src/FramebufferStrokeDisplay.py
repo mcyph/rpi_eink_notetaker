@@ -66,14 +66,6 @@ class FramebufferStrokeDisplay:
         self.rules_surface = pygame.Surface(size)
         pygame.draw.ellipse(self.cursor_surface, (255, 0, 0), [0, 0, 4, 4])
 
-        self.__lines_regions = []
-        for x in range(11):
-            y = int(size[1]/10.0*x)
-            pygame.draw.line(self.rules_surface, (0, 0, 100), (0, y), (size[0], y))
-            self.__lines_regions.append(pygame.Rect(0, y, size[0], 1))
-        self.screen.blit(self.rules_surface, (0, 0))
-        self.__update_regions.extend(self.__lines_regions)
-
         self.clear()
         self.update()
 
@@ -86,6 +78,15 @@ class FramebufferStrokeDisplay:
     def clear(self):
         self.screen.fill((0, 0, 0))
         self.stroke_surface.fill((0, 0, 0))
+
+        self.__lines_regions = []
+        for x in range(11):
+            y = int(self.size[1] / 10.0 * x)
+            pygame.draw.line(self.rules_surface, (0, 0, 100), (0, y), (self.size[0], y))
+            self.__lines_regions.append(pygame.Rect(0, y, self.size[0], 1))
+        self.screen.blit(self.rules_surface, (0, 0))
+        self.__update_regions.extend(self.__lines_regions)
+
         pygame.display.update()
         self.__current_id = 0
 

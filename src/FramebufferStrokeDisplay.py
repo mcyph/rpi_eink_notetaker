@@ -78,15 +78,7 @@ class FramebufferStrokeDisplay:
     def clear(self):
         self.screen.fill((0, 0, 0))
         self.stroke_surface.fill((0, 0, 0))
-
-        self.__lines_regions = []
-        for x in range(11):
-            y = round((self.size[1]-1) / 10.0 * x)
-            pygame.draw.line(self.rules_surface, (0, 0, 200), (y, 0), (y, self.size[0]))
-            self.__lines_regions.append(pygame.Rect(y, 0, 1, self.size[0]))
-        self.screen.blit(self.rules_surface, (0, 0))
-        self.__update_regions.extend(self.__lines_regions)
-
+        self.draw_lines()
         pygame.display.update()
         self.__current_id = 0
 
@@ -116,8 +108,7 @@ class FramebufferStrokeDisplay:
             changed = True
 
         if changed:
-            self.screen.blit(self.rules_surface, (0, 0))
-            self.__update_regions.extend(self.__lines_regions)
+            self.draw_lines()
             self.screen.blit(self.stroke_surface, (0, 0))
         self.__current_id = len(strokes)
 
@@ -132,6 +123,15 @@ class FramebufferStrokeDisplay:
             self.__update_regions.append(pygame.Rect(self.__cursor_pos[0], self.__cursor_pos[1], 4, 4))
             self.__update_regions.append(pygame.Rect(cursor_pos[0], cursor_pos[1], 4, 4))
             self.__cursor_pos = cursor_pos
+
+    def draw_lines(self):
+        self.__lines_regions = []
+        for x in range(11):
+            y = round((self.size[1] - 1) / 10.0 * x)
+            pygame.draw.line(self.rules_surface, (0, 0, 200), (y, 0), (y, self.size[0]))
+            self.__lines_regions.append(pygame.Rect(0, y, self.size[0], 1))
+        self.screen.blit(self.rules_surface, (0, 0))
+        self.__update_regions.extend(self.__lines_regions)
 
     def update(self):
         if self.__update_regions:

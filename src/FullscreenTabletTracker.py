@@ -60,7 +60,7 @@ class FullscreenTabletTracker:
             elif event.type == ecodes.EV_KEY:
                 #if event.code == ecodes.BTN_TOUCH:
                 self.on_mouse_up_down(event.value)
-                print("EV_KEY!!!")
+                print("EV_KEY!!!", event.value)
             print(categorize(event), event.type, event.code, event.value)
 
     def motion(self, x, y):

@@ -72,6 +72,7 @@ class FullscreenTabletTracker:
         
     def on_mouse_up_down(self, value):
         if self.points:
+            print("ON DRAW END:", self.points)
             self.on_draw_end(self.points)
         self.points = []
         self.mouse_down = value

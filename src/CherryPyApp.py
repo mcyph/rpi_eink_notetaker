@@ -11,7 +11,7 @@ from FramebufferStrokeDisplay import FramebufferStrokeDisplay
 env = Environment(loader=FileSystemLoader(searchpath='./template'),
                   autoescape=True)
 Y_OFFSET_TOP = -20
-Y_SCALE_FACTOR = 1.1
+Y_SCALE_FACTOR = 1.05
 
 
 class App(object):
@@ -155,7 +155,7 @@ if __name__ == '__main__':
 
     def on_draw_end(stroke):
         stroke = [(x, max(0, y+Y_OFFSET_TOP)) for x, y in stroke]
-        stroke = [(x, y*Y_SCALE_FACTOR) for x, y in stroke]
+        stroke = [(x, round(y*Y_SCALE_FACTOR)) for x, y in stroke]
         current_page = APP[0].append_stroke(DOCUMENTS[0], stroke)
 
     def on_motion(x, y):

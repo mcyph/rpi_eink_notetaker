@@ -35,12 +35,12 @@ if __name__ == '__main__':
             elif current_mode == MODE_OTHER:
                 system(KILL_OTHER_COMMAND)
                 system(TABLET_COMMAND)
-                current_mode = MODE_TABLET
             elif current_mode == MODE_NONE:
                 system(TABLET_COMMAND)
-                current_mode = MODE_TABLET
             else:
                 raise Exception()
+
+            current_mode = MODE_TABLET
         else:
             if current_mode == MODE_OTHER:
                 # Do nothing
@@ -48,11 +48,11 @@ if __name__ == '__main__':
             elif current_mode == MODE_TABLET:
                 system(KILL_TABLET_COMMAND)
                 system(OTHER_COMMAND)
-                current_mode = MODE_OTHER
             elif current_mode == MODE_NONE:
                 system(OTHER_COMMAND)
-                current_mode = MODE_OTHER
             else:
                 raise Exception()
+
+            current_mode = MODE_OTHER
 
         sleep(5)

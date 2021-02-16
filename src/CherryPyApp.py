@@ -11,7 +11,7 @@ from FramebufferStrokeDisplay import FramebufferStrokeDisplay
 env = Environment(loader=FileSystemLoader(searchpath='./template'),
                   autoescape=True)
 Y_OFFSET_TOP = 10
-Y_SCALE_FACTOR = 0.95
+Y_SCALE_FACTOR = 0.92
 
 
 class App(object):

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import evdev
 from time import sleep
 from os import environ, system

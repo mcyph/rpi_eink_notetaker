@@ -116,7 +116,7 @@ class FramebufferStrokeDisplay:
             self.size[0]-round(cursor_pos[1]*(self.size[0]/1080.0))-2,
             round(cursor_pos[0]*(self.size[1]/1920.0))-2
         ]
-        if abs(cursor_pos[0]-self.__cursor_pos[0]) > 2 or abs(cursor_pos[1]-self.__cursor_pos[1]) > 2:
+        if abs(cursor_pos[0]-self.__cursor_pos[0]) >= 1 or abs(cursor_pos[1]-self.__cursor_pos[1]) >= 1:
             self.screen.blit(self.cursor_surface, cursor_pos)
             self.screen.blit(self.blank_surface, self.__cursor_pos)
 

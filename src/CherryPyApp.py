@@ -154,13 +154,13 @@ if __name__ == '__main__':
     _thread.start_new_thread(run, ())
 
     def on_draw_end(stroke):
-        stroke = [(x, max(0, y+Y_OFFSET_TOP)) for x, y in stroke]
         stroke = [(x, round(y*Y_SCALE_FACTOR)) for x, y in stroke]
+        stroke = [(x, max(0, y + Y_OFFSET_TOP)) for x, y in stroke]
         current_page = APP[0].append_stroke(DOCUMENTS[0], stroke)
 
     def on_motion(x, y):
-        y = y+Y_OFFSET_TOP
         y = round(y*Y_SCALE_FACTOR)
+        y = y + Y_OFFSET_TOP
 
         strokes = APP[0].get_strokes() or []
         fb_stroke_display.draw(strokes, [x, y])

@@ -1,3 +1,4 @@
+import os
 import time
 import _thread
 import cherrypy
@@ -8,7 +9,7 @@ from FullscreenTabletTracker import FullscreenTabletTracker
 from FramebufferStrokeDisplay import FramebufferStrokeDisplay
 
 
-env = Environment(loader=FileSystemLoader(searchpath='./template'),
+env = Environment(loader=FileSystemLoader(searchpath=os.path.realpath(__file__)+'/template'),
                   autoescape=True)
 Y_OFFSET_TOP = 10
 Y_SCALE_FACTOR = 0.92
